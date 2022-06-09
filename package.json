@@ -3,7 +3,7 @@
   "name": "crystal-nest",
   "description": "A Nest rewrite of crystal, the SOS Discord bot",
   "version": "0.0.1",
-  "author": "Jonas Schultheiss <jonas.schultheiss@pr1sm.gg> (https://jonasschultheiss.dev)",
+  "author": "Jonas Schultheiss <jonas.schultheiss@sos-esports.com> (https://jonasschultheiss.dev)",
   "keywords": [
     "react",
     "ui",
