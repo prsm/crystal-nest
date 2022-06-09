@@ -1,10 +1,29 @@
 {
+  "license": "MIT",
   "name": "crystal-nest",
-  "version": "0.0.1",
-  "description": "",
-  "author": "Jonas Schultheiss",
-  "private": true,
-  "license": "UNLICENSED",
+  "description": "A Nest rewrite of crystal, the SOS Discord bot",
+  "version": "0.1.1",
+  "author": "Jonas Schultheiss <jonas.schultheiss@sos-esports.com> (https://jonasschultheiss.dev)",
+  "keywords": [
+    "discord",
+    "nestjs",
+    "prisma",
+    "docker",
+    "docker-compose"
+  ],
+  "homepage": "https://github.com/prsm/crystal-nest",
+  "bugs": {
+    "url": "https://github.com/prsm/crystal-nest/issues"
+  },
+  "private": false,
+  "engines": {
+    "node": ">=16.15.1 <17.0.0",
+    "yarn": "^1.22.15"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prsm/crystal-nest.git"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
