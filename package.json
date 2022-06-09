@@ -5,11 +5,11 @@
   "version": "0.0.1",
   "author": "Jonas Schultheiss <jonas.schultheiss@sos-esports.com> (https://jonasschultheiss.dev)",
   "keywords": [
-    "react",
-    "ui",
-    "framer-motion",
-    "tailwindcss",
-    "storybook"
+    "discord",
+    "nestjs",
+    "prisma",
+    "docker",
+    "docker-compose"
   ],
   "homepage": "https://github.com/prsm/crystal-nest",
   "bugs": {
