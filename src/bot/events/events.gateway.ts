@@ -1,7 +1,16 @@
 import { InjectDiscordClient, On } from '@discord-nestjs/core';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Client, GuildScheduledEvent } from 'discord.js';
+import {
+  Client,
+  Guild,
+  GuildMember,
+  GuildScheduledEvent,
+  NonThreadGuildBasedChannel,
+  Permissions,
+  Role,
+  User
+} from 'discord.js';
 import { ChannelTypes } from 'discord.js/typings/enums';
 
 @Injectable()
@@ -14,9 +23,30 @@ export class EventsGateway {
     private readonly configService: ConfigService
   ) {}
 
+  private async getEventChannel(guild: Guild, eventName: string): Promise<NonThreadGuildBasedChannel> {
+    const channels = await guild.channels.fetch();
+    eventName = eventName.toLocaleLowerCase().replaceAll(' ', '-');
+    return channels.find(
+      channel => channel.name === eventName && channel.parentId === this.configService.get('discord.eventCategoryId')
+    );
+  }
+
+  private async getEventRole(guild: Guild, eventName: string): Promise<Role> {
+    const roles = await guild.roles.fetch();
+    return roles.find(role => role.name === eventName);
+  }
+
+  private getGuild(): Promise<Guild> {
+    return this.client.guilds.fetch({ guild: this.configService.get('discord.guildId') });
+  }
+
+  private getGuildMember(guild: Guild, userId: string): GuildMember {
+    return guild.members.resolve(userId);
+  }
+
   @On('guildScheduledEventCreate')
   async onCreate(event: GuildScheduledEvent): Promise<void> {
-    const guild = await this.client.guilds.fetch({ guild: this.configService.get('discord.guildId') });
+    const guild = await this.getGuild();
     const role = await guild.roles.create({ name: event.name });
     const channel = await guild.channels.create(event.name, {
       topic: event.description,
@@ -25,17 +55,74 @@ export class EventsGateway {
       permissionOverwrites: [
         {
           id: guild.id,
-          deny: ['VIEW_CHANNEL']
+          deny: [Permissions.FLAGS.VIEW_CHANNEL]
         },
         {
           id: role.id,
-          allow: ['VIEW_CHANNEL']
+          allow: [Permissions.FLAGS.VIEW_CHANNEL]
         }
       ]
     });
 
-    const member = guild.members.resolve(event.creatorId);
+    const member = this.getGuildMember(guild, event.creatorId);
     member.roles.add(role.id);
+    channel.send(`Event ${event.name} created successfully.\nInvite your friends with this link: ${event.url}`);
     this.logger.log(`Event ${event.name} created successfully`);
+  }
+
+  @On('guildScheduledEventUpdate')
+  async onUpdate(oldEvent: GuildScheduledEvent, newEvent: GuildScheduledEvent): Promise<void> {
+    if (newEvent.isCompleted()) {
+      return this.onDelete(newEvent);
+    }
+
+    if (oldEvent.name === newEvent.name && oldEvent.description === newEvent.description) {
+      return;
+    }
+
+    const guild = await this.getGuild();
+    const channel = await this.getEventChannel(guild, oldEvent.name);
+    await channel.edit({
+      name: newEvent.name,
+      topic: newEvent.description
+    });
+
+    this.logger.log(`Event ${newEvent.name} updated successfully`);
+  }
+
+  @On('guildScheduledEventDelete')
+  async onDelete(event: GuildScheduledEvent): Promise<void> {
+    const guild = await this.getGuild();
+    const channel = await this.getEventChannel(guild, event.name);
+    await channel.edit({
+      parent: this.configService.get('discord.archiveCategoryId'),
+      permissionOverwrites: [
+        { id: guild.id, allow: [Permissions.FLAGS.VIEW_CHANNEL] },
+        { id: guild.id, deny: [Permissions.FLAGS.SEND_MESSAGES] }
+      ]
+    });
+
+    const role = await this.getEventRole(guild, event.name);
+    role.delete();
+
+    this.logger.log(`Event ${event.name} deleted successfully`);
+  }
+
+  @On('guildScheduledEventUserAdd')
+  async onUserAdd(event: GuildScheduledEvent, user: User): Promise<void> {
+    const guild = await this.getGuild();
+    const role = await this.getEventRole(guild, event.name);
+    const member = this.getGuildMember(guild, user.id);
+    await member.roles.add(role.id);
+    this.logger.log(`${member.displayName} was added to Event ${event.name} successfully`);
+  }
+
+  @On('guildScheduledEventUserRemove')
+  async onUserRemove(event: GuildScheduledEvent, user: User): Promise<void> {
+    const guild = await this.getGuild();
+    const role = await this.getEventRole(guild, event.name);
+    const member = this.getGuildMember(guild, user.id);
+    await member.roles.remove(role.id);
+    this.logger.log(`${member.displayName} was added to Event ${event.name} successfully`);
   }
 }
