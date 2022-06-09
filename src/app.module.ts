@@ -22,8 +22,7 @@ import { PrismaModule } from './prisma/prisma.module';
             activities: [
               {
                 name: 'with ya mum',
-                type: ActivityTypes.PLAYING,
-                url: 'https://pornhub.com'
+                type: ActivityTypes.PLAYING
               }
             ]
           },

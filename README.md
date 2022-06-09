@@ -107,7 +107,7 @@ Deploy image with a postgres db and see the slash commands.
 ## Roadmap
 
 - [x] Init
-- [ ] Events
+- [x] Events
 - [ ] Roles
 - [ ] Channels
 - [ ] Jira integration
