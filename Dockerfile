@@ -5,6 +5,7 @@ FROM node:16-slim as stage-base
 
 RUN apt-get update
 RUN apt-get install -y openssl
+RUN apt-get install -y procps && rm -rf /var/lib/apt/lists/*
 
 ENV NODE_ENV=${APP_ENV}
 
