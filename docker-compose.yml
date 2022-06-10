@@ -12,7 +12,8 @@ services:
     working_dir: /usr/src/app
     command: sh -c "yarn install && yarn prisma:generate && yarn start:migrate:dev"
     volumes:
-      - ./:/usr/src/app
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
     env_file:
       - ./.env
     ports:
