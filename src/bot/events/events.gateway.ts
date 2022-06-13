@@ -1,16 +1,7 @@
 import { InjectDiscordClient, On } from '@discord-nestjs/core';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import {
-  Client,
-  Guild,
-  GuildMember,
-  GuildScheduledEvent,
-  NonThreadGuildBasedChannel,
-  Permissions,
-  Role,
-  User
-} from 'discord.js';
+import { Client, Guild, GuildMember, GuildScheduledEvent, Permissions, Role, TextChannel, User } from 'discord.js';
 import { ChannelTypes } from 'discord.js/typings/enums';
 
 @Injectable()
@@ -23,12 +14,12 @@ export class EventsGateway {
     private readonly configService: ConfigService
   ) {}
 
-  private async getEventChannel(guild: Guild, eventName: string): Promise<NonThreadGuildBasedChannel> {
+  private async getEventChannel(guild: Guild, eventName: string): Promise<TextChannel> {
     const channels = await guild.channels.fetch();
     eventName = eventName.toLocaleLowerCase().replaceAll(' ', '-');
     return channels.find(
       channel => channel.name === eventName && channel.parentId === this.configService.get('discord.eventCategoryId')
-    );
+    ) as TextChannel;
   }
 
   private async getEventRole(guild: Guild, eventName: string): Promise<Role> {
@@ -44,25 +35,42 @@ export class EventsGateway {
     return guild.members.resolve(userId);
   }
 
+  private async getOrCreateChannel(guild: Guild, event: GuildScheduledEvent, roleId: string): Promise<TextChannel> {
+    const channel = await this.getEventChannel(guild, event.name);
+    if (channel) {
+      return channel;
+    } else {
+      return guild.channels.create(event.name, {
+        topic: event.description,
+        type: ChannelTypes.GUILD_TEXT,
+        parent: this.configService.get('discord.eventCategoryId'),
+        permissionOverwrites: [
+          {
+            id: guild.id,
+            deny: [Permissions.FLAGS.VIEW_CHANNEL]
+          },
+          {
+            id: roleId,
+            allow: [Permissions.FLAGS.VIEW_CHANNEL]
+          }
+        ]
+      });
+    }
+  }
+  private async getOrCreateRole(guild: Guild, eventName: string): Promise<Role> {
+    const role = await this.getEventRole(guild, eventName);
+    if (role) {
+      return role;
+    } else {
+      return guild.roles.create({ name: eventName });
+    }
+  }
+
   @On('guildScheduledEventCreate')
   async onCreate(event: GuildScheduledEvent): Promise<void> {
     const guild = await this.getGuild();
-    const role = await guild.roles.create({ name: event.name });
-    const channel = await guild.channels.create(event.name, {
-      topic: event.description,
-      type: ChannelTypes.GUILD_TEXT,
-      parent: this.configService.get('discord.eventCategoryId'),
-      permissionOverwrites: [
-        {
-          id: guild.id,
-          deny: [Permissions.FLAGS.VIEW_CHANNEL]
-        },
-        {
-          id: role.id,
-          allow: [Permissions.FLAGS.VIEW_CHANNEL]
-        }
-      ]
-    });
+    const role = await this.getOrCreateRole(guild, event.name);
+    const channel = await this.getOrCreateChannel(guild, event, role.id);
 
     const member = this.getGuildMember(guild, event.creatorId);
     member.roles.add(role.id);
@@ -97,7 +105,8 @@ export class EventsGateway {
     await channel.edit({
       parent: this.configService.get('discord.archiveCategoryId'),
       permissionOverwrites: [
-        { id: guild.id, allow: [Permissions.FLAGS.VIEW_CHANNEL] },
+        { id: '959197425929683045', allow: [Permissions.FLAGS.VIEW_CHANNEL] },
+        { id: '959193190068539443', allow: [Permissions.FLAGS.VIEW_CHANNEL] },
         { id: guild.id, deny: [Permissions.FLAGS.SEND_MESSAGES] }
       ]
     });
