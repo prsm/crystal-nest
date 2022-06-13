@@ -123,8 +123,8 @@ export class EventsGateway {
     await channel.edit({
       parent: this.configService.get('discord.archiveCategoryId'),
       permissionOverwrites: [
-        { id: '959197425929683045', allow: [Permissions.FLAGS.VIEW_CHANNEL] },
-        { id: '959193190068539443', allow: [Permissions.FLAGS.VIEW_CHANNEL] },
+        { id: this.configService.get('discord.playerRoleId'), allow: [Permissions.FLAGS.VIEW_CHANNEL] },
+        { id: this.configService.get('discord.memberRoleId'), allow: [Permissions.FLAGS.VIEW_CHANNEL] },
         { id: guild.id, deny: [Permissions.FLAGS.SEND_MESSAGES] }
       ]
     });
