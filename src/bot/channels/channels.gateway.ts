@@ -39,7 +39,7 @@ export class ChannelsGateway {
       return;
     }
 
-    await this.handleDynamicChannels(oldState, newState);
+    await this.handleDynamicChannels(oldState);
   }
 
   private async getCategoryChannels(): Promise<VoiceChannel[]> {
@@ -66,7 +66,7 @@ export class ChannelsGateway {
     }
   }
 
-  private async handleDynamicChannels(oldState: VoiceState, newState: VoiceState): Promise<void> {
+  private async handleDynamicChannels(oldState: VoiceState): Promise<void> {
     await this.handleUserLeftFirstChannel(oldState.channel);
     await this.removeAllEmptyChannelsExceptFirst();
     await this.createEmptyChannelIfNeeded();
@@ -106,6 +106,7 @@ export class ChannelsGateway {
 
     if (channel.position === 0 && channel.members.size === 0) {
       await this.resetChannel(channel);
+      this.logger.log(`Reseted channel ${channel.name}`);
     }
   }
 
@@ -117,13 +118,15 @@ export class ChannelsGateway {
 
   private async createChannel(index: number): Promise<void> {
     try {
-      await this.guild.channels.create(`voice ${index + 1}`, {
+      const channel = await this.guild.channels.create(`voice ${index + 1}`, {
         type: ChannelTypes.GUILD_VOICE,
         parent: this.voiceCategoryId,
         position: index,
         topic: `dynamically created voice channel number ${index + 1}`,
         bitrate: this.getMaxBitrate(this.guild)
       });
+
+      this.logger.log(`Created channel ${channel.name}}`);
     } catch (e) {
       const error = e as DiscordAPIError;
       if (error.code === 10003) {
@@ -136,10 +139,12 @@ export class ChannelsGateway {
 
   private async updateChannel(channel: VoiceBasedChannel, index: number): Promise<void> {
     try {
-      await channel.edit({
+      const updatedChannel = await channel.edit({
         name: `voice ${index + 1}`,
         topic: `dynamically created voice channel number ${index + 1}`
       });
+
+      this.logger.log(`Renamed channel ${channel.name} to ${updatedChannel.name}`);
     } catch (e) {
       const error = e as DiscordAPIError;
       if (error.code === 10003) {
@@ -153,6 +158,8 @@ export class ChannelsGateway {
   private async deleteChannel(channel: VoiceBasedChannel): Promise<void> {
     try {
       await channel.delete();
+
+      this.logger.log(`Deleted channel ${channel.name}`);
     } catch (e) {
       const error = e as DiscordAPIError;
       if (error.code === 10003) {

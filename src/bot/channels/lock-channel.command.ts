@@ -36,12 +36,15 @@ export class LockChannelCommand implements DiscordTransformedCommand<LockChannel
 
     if (amount) {
       await voice.channel.edit({ userLimit: amount });
+      this.logger.log(`Locked channel ${voice.channel.name} to ${amount} users`);
       interaction.reply({ content: `Locked the channel to ${amount} users`, ephemeral: true });
     } else if (voice.channel.userLimit === 0) {
       await voice.channel.edit({ userLimit: voice.channel.members.size });
+      this.logger.log(`Locked channel ${voice.channel.name} to ${voice.channel.members.size} users`);
       interaction.reply({ content: `Locked the channel to ${voice.channel.members.size} users`, ephemeral: true });
     } else {
       await voice.channel.edit({ userLimit: 0 });
+      this.logger.log(`Unlocked channel ${voice.channel.name}`);
       interaction.reply({ content: `Unlocked the channel`, ephemeral: true });
     }
   }
