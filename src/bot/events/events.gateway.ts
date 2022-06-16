@@ -33,9 +33,10 @@ export class EventsGateway {
     return found;
   }
 
-  private getGuild(): Promise<Guild> {
+  private async getGuild(): Promise<Guild> {
     const found = await this.client.guilds.fetch({ guild: this.configService.get('discord.guildId') });
     this.logger.log(`Found guild with name ${found.name}`);
+    return found;
   }
 
   private getGuildMember(guild: Guild, userId: string): GuildMember {
@@ -78,7 +79,7 @@ export class EventsGateway {
       this.logger.log(`Found role ${role.name}`);
       return role;
     } else {
-      const createdRole = guild.roles.create({ name: eventName });
+      const createdRole = await guild.roles.create({ name: eventName });
       this.logger.log(`Successfully created role ${createdRole.name}`);
       return createdRole;
     }

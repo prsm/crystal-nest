@@ -2,7 +2,7 @@
   "license": "MIT",
   "name": "crystal-nest",
   "description": "A Nest rewrite of crystal, the SOS Discord bot",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "author": "Jonas Schultheiss <jonas.schultheiss@sos-esports.com> (https://jonasschultheiss.dev)",
   "keywords": [
     "discord",
@@ -28,8 +28,8 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start:dev": "nest start --debug --watch",
-    "start:debug": "nest start --debug --watch",
+    "start:dev": "nest start --debug 0.0.0.0:9229 --watch",
+    "start:debug": "nest start --debug 0.0.0.0:9229 --watch",
     "start:prod": "node dist/main",
     "start:migrate:dev": "prisma migrate dev && yarn start:debug",
     "start:migrate:prod": "prisma migrate deploy && yarn start:prod",
@@ -53,10 +53,14 @@
     "@nestjs/core": "^8.4.6",
     "@nestjs/platform-express": "^8.4.6",
     "@prisma/client": "^3.15.0",
+    "bufferutil": "^4.0.6",
     "discord.js": "^13.8.0",
+    "erlpack": "discord/erlpack",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.5.5"
+    "rxjs": "^7.5.5",
+    "utf-8-validate": "^5.0.9",
+    "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.2.6",
