@@ -3,6 +3,7 @@ export default interface IDiscordConfiguration {
   guildId: string;
   eventCategoryId: string;
   archiveCategoryId: string;
+  voiceCategoryId: string;
   memberRoleId: string;
   playerRoleId: string;
 }
