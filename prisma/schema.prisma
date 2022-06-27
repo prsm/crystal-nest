@@ -7,7 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Test {
+model DynamicRole {
   id  String  @id @default(cuid())
-  amk String?
+  name String @unique
+  shortDescription String @db.VarChar(42)
+  emojiId String @unique
+  amountOfSubscribers Int
 }
