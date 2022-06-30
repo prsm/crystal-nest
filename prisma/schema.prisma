@@ -9,8 +9,8 @@ datasource db {
 
 model DynamicRole {
   id  String  @id @default(cuid())
-  name String @unique
+  name String @unique  @db.VarChar(18)
   shortDescription String @db.VarChar(42)
-  emojiId String @unique
+  emoji String @unique
   amountOfSubscribers Int
 }
