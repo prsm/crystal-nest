@@ -21,7 +21,7 @@ import { PrismaModule } from './prisma/prisma.module';
             status: 'online',
             activities: [
               {
-                name: 'with ya mum',
+                name: 'Pac-Man',
                 type: ActivityTypes.PLAYING
               }
             ]
