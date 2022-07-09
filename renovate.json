@@ -19,6 +19,26 @@
   },
   "schedule": ["after 10pm and before 5:00am"],
   "timezone": "Europe/Zurich",
+  "lockFileMaintenance": {
+    "enabled": false,
+    "recreateClosed": true,
+    "rebaseStalePrs": true,
+    "branchTopic": "lock-file-maintenance",
+    "commitMessageAction": "Lock file maintenance",
+    "schedule": ["after 10pm and before 5:00am"],
+    "prBodyDefinitions": {
+      "Change": "All locks refreshed"
+    }
+  },
+  "vulnerabilityAlerts": {
+    "schedule": ["after 10pm and before 5:00am"],
+    "dependencyDashboardApproval": false,
+    "stabilityDays": 0,
+    "rangeStrategy": "update-lockfile",
+    "commitMessageSuffix": "[SECURITY]",
+    "branchTopic": "{{{datasource}}}-{{{depName}}}-vulnerability",
+    "prCreation": "immediate"
+  },
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
