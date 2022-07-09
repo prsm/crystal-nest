@@ -18,7 +18,7 @@
     "pinDigests": false
   },
   "schedule": ["after 10pm and before 5:00am"],
-  "timezone": "CEST",
+  "timezone": "Europe/Zurich",
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
