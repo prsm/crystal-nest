@@ -104,6 +104,10 @@ export class ChannelsGateway {
       return;
     }
 
+    if (channel.parentId !== this.voiceCategoryId) {
+      return;
+    }
+
     if (channel.position === 0 && channel.members.size === 0) {
       await this.resetChannel(channel);
       this.logger.log(`Reseted channel ${channel.name}`);

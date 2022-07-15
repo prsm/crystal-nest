@@ -1,7 +1,7 @@
 ARG APP_ENV=development
 
 # ----- BASE ------
-FROM node:16 as stage-base
+FROM node:18 as stage-base
 
 RUN apt-get update
 RUN apt-get install -y procps && rm -rf /var/lib/apt/lists/*
@@ -26,7 +26,7 @@ FROM stage-base AS stage-production
 COPY --from=stage-build /usr/src/app/dist ./dist
 COPY --from=stage-build /usr/src/app/yarn.lock ./yarn.lock
 
-RUN npm install --location=global prisma@^3.15.0
+RUN npm install --location=global prisma@4.0.0
 
 COPY package.json ./
 COPY prisma ./prisma/
