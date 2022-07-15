@@ -1,0 +1,84 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base", ":rebaseStalePrs"],
+  "assignees": ["jonas.schultheiss"],
+  "reviewers": ["jonas.schultheiss"],
+  "baseBranches": ["development"],
+  "labels": ["dependencies"],
+  "bumpVersion": "prerelease",
+  "dependencyDashboard": true,
+  "dependencyDashboardAutoclose": true,
+  "dependencyDashboardLabels": ["dashboard", "wontfix"],
+  "docker": {
+    "versioning": "docker"
+  },
+  "nvm": {
+    "fileMatch": ["(^|/)\\.nvmrc$"],
+    "versioning": "node",
+    "pinDigests": false
+  },
+  "schedule": ["after 10pm and before 5:00am"],
+  "timezone": "Europe/Zurich",
+  "lockFileMaintenance": {
+    "enabled": false,
+    "recreateClosed": true,
+    "rebaseStalePrs": true,
+    "branchTopic": "lock-file-maintenance",
+    "commitMessageAction": "Lock file maintenance",
+    "schedule": ["after 10pm and before 5:00am"],
+    "prBodyDefinitions": {
+      "Change": "All locks refreshed"
+    }
+  },
+  "vulnerabilityAlerts": {
+    "schedule": ["after 10pm and before 5:00am"],
+    "dependencyDashboardApproval": false,
+    "stabilityDays": 0,
+    "rangeStrategy": "update-lockfile",
+    "commitMessageSuffix": "[SECURITY]",
+    "branchTopic": "{{{datasource}}}-{{{depName}}}-vulnerability",
+    "prCreation": "immediate"
+  },
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "automerge": true
+    },
+    {
+      "matchPackagePatterns": ["eslint"],
+      "labels": ["linting"]
+    },
+    {
+      "matchPackagePatterns": ["prettier"],
+      "labels": ["formatting"]
+    },
+    {
+      "matchPackagePatterns": ["@nestjs"],
+      "labels": ["framework"]
+    },
+    {
+      "matchPackagePatterns": ["prisma"],
+      "labels": ["orm"]
+    },
+    {
+      "matchPackagePatterns": ["discord"],
+      "labels": ["discord"]
+    },
+    {
+      "matchDatasources": ["docker"],
+      "labels": ["docker-update"]
+    },
+    {
+      "matchDepTypes": ["optionalDependencies"],
+      "addLabels": ["optional"]
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "addLabels": ["development"]
+    }
+  ]
+}
