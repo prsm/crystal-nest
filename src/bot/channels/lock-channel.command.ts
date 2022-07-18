@@ -28,9 +28,8 @@ export class LockChannelCommand implements DiscordTransformedCommand<LockChannel
     @Payload() { amount }: LockChannelDto,
     { interaction }: TransformedCommandExecutionContext
   ): Promise<void> {
-    this.logger.log(amount);
     const { voice } = interaction.guild.members.cache.get(interaction.user.id);
-    if (!voice.channel || voice.channel.parentId !== this.voiceCategoryId) {
+    if (!voice || !voice.channel || voice.channel.parentId !== this.voiceCategoryId) {
       interaction.reply({ content: 'You are currently not connected to a dynamic voice channel', ephemeral: true });
     }
 

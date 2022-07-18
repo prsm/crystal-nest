@@ -76,7 +76,7 @@ export class ChannelsGateway {
   private async renameChannelsIfNeeded(): Promise<void> {
     const categoryChannels = await this.getCategoryChannels();
     for (const channel of categoryChannels) {
-      if (channel.name !== `voice ${channel.position}`) {
+      if (channel.name !== `voice ${channel.position + 1}`) {
         await this.updateChannel(channel, channel.position);
       }
     }
@@ -130,7 +130,7 @@ export class ChannelsGateway {
         bitrate: this.getMaxBitrate(this.guild)
       });
 
-      this.logger.log(`Created channel ${channel.name}}`);
+      this.logger.log(`Created channel ${channel.name}`);
     } catch (e) {
       const error = e as DiscordAPIError;
       if (error.code === 10003) {
