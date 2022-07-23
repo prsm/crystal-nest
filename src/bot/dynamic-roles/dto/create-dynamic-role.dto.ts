@@ -22,8 +22,7 @@ export class CreateDynamicRoleDto {
   })
   readonly shortDescription: string;
 
-  @MinLength(1)
-  @Matches(/(<a?)?:\w+:(\d{18}>)?/)
+  @Matches(/<a?:.+?:\d{18}>|\p{Extended_Pictographic}/gu, { message: 'Invalid emoji' })
   @Param({
     name: 'emoji',
     description: 'Id of the emoji that will be displayed related to the role',

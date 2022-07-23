@@ -17,7 +17,7 @@ export class CommandValidationFilter implements DiscordExceptionFilter {
     );
 
     if (interaction.isCommand()) {
-      await interaction.reply({ embeds, ephemeral: true });
+      return interaction.reply({ embeds, ephemeral: true });
     }
   }
 }

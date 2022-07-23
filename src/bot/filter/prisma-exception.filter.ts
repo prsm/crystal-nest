@@ -1,5 +1,6 @@
 import { Catch, DiscordArgumentMetadata, DiscordExceptionFilter } from '@discord-nestjs/core';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { MessageEmbed } from 'discord.js';
 
 @Catch(PrismaClientKnownRequestError)
 export class PrismaExceptionFilter implements DiscordExceptionFilter {
@@ -7,8 +8,10 @@ export class PrismaExceptionFilter implements DiscordExceptionFilter {
     exception: PrismaClientKnownRequestError,
     metadata: DiscordArgumentMetadata<'interactionCreate'>
   ): Promise<void> {
+    console.log('🚀 ~ file: prisma-exception.filter.ts ~ line 10 ~ PrismaExceptionFilter ~ exception', exception);
     const [interaction] = metadata.eventArgs;
     let errorMessage: string;
+    console.log('🚀 ~ file: prisma-exception.filter.ts ~ line 10 ~ PrismaExceptionFilter ~ metadata', metadata);
 
     switch (exception.code) {
       case 'P1000':
@@ -146,7 +149,24 @@ export class PrismaExceptionFilter implements DiscordExceptionFilter {
     }
 
     if (interaction.isCommand()) {
-      await interaction.reply({ content: errorMessage, ephemeral: true });
+      const embed = new MessageEmbed({
+        color: 'RED',
+        author: {
+          name: 'Prisma',
+          iconURL: 'https://avatars.githubusercontent.com/u/17219288?s=200&v=4',
+          url: 'https://www.prisma.io/'
+        },
+        footer: {
+          text:
+            'This is a error message from the ORM.\n' +
+            'If this does not make sense to you, write a message with the error code to a moderator or developer.'
+        }
+      }).addFields({
+        name: exception.code,
+        value: errorMessage
+      });
+
+      return interaction.reply({ embeds: [embed], ephemeral: true });
     }
   }
 }
