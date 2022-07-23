@@ -13,8 +13,10 @@ export class DynamicRolesService {
     this.logger = new Logger(DynamicRolesService.name);
   }
 
-  async create(createDynamicRoleDto: CreateDynamicRoleDto): Promise<DynamicRole> {
-    const role = await this.prisma.dynamicRole.create({ data: { ...createDynamicRoleDto, amountOfSubscribers: 0 } });
+  async create(createDynamicRoleDto: CreateDynamicRoleDto, channelId: string): Promise<DynamicRole> {
+    const role = await this.prisma.dynamicRole.create({
+      data: { ...createDynamicRoleDto, channelId, amountOfSubscribers: 0 }
+    });
     this.logger.log(`Created dynamic role "${role.name}"`);
     return role;
   }

@@ -1,5 +1,5 @@
 import { Param, ParamType } from '@discord-nestjs/core';
-import { Matches, MaxLength, MinLength } from 'class-validator';
+import { IsOptional, Matches, MaxLength, MinLength } from 'class-validator';
 
 export class CreateDynamicRoleDto {
   @MinLength(3)
@@ -30,4 +30,14 @@ export class CreateDynamicRoleDto {
     type: ParamType.STRING
   })
   readonly emoji: string;
+
+  @IsOptional()
+  @Matches(/^<?#?[0-9]{18}>?$/, { message: 'Invalid channel id' })
+  @Param({
+    name: 'channel-id',
+    description: 'Id of the channel if it already exists',
+    required: false,
+    type: ParamType.STRING
+  })
+  readonly channelId?: string;
 }

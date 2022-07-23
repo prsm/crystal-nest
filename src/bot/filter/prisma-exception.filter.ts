@@ -8,10 +8,8 @@ export class PrismaExceptionFilter implements DiscordExceptionFilter {
     exception: PrismaClientKnownRequestError,
     metadata: DiscordArgumentMetadata<'interactionCreate'>
   ): Promise<void> {
-    console.log('🚀 ~ file: prisma-exception.filter.ts ~ line 10 ~ PrismaExceptionFilter ~ exception', exception);
     const [interaction] = metadata.eventArgs;
     let errorMessage: string;
-    console.log('🚀 ~ file: prisma-exception.filter.ts ~ line 10 ~ PrismaExceptionFilter ~ metadata', metadata);
 
     switch (exception.code) {
       case 'P1000':
