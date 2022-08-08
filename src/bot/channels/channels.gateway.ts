@@ -42,8 +42,8 @@ export class ChannelsGateway {
     await this.handleDynamicChannels(oldState);
   }
 
-  private async getCategoryChannels(): Promise<VoiceChannel[]> {
-    const allChannels = Array.from(await this.guild.channels.cache.values());
+  private getCategoryChannels(): VoiceChannel[] {
+    const allChannels = Array.from(this.guild.channels.cache.values());
     return allChannels.filter(channel => channel.parentId === this.voiceCategoryId) as VoiceChannel[];
   }
 
@@ -51,16 +51,12 @@ export class ChannelsGateway {
     switch (guild.premiumTier) {
       case 'NONE':
         return 96000;
-        break;
       case 'TIER_1':
         return 128000;
-        break;
       case 'TIER_2':
         return 256000;
-        break;
       case 'TIER_3':
         return 384000;
-        break;
       default:
         return 96000;
     }
@@ -74,7 +70,7 @@ export class ChannelsGateway {
   }
 
   private async renameChannelsIfNeeded(): Promise<void> {
-    const categoryChannels = await this.getCategoryChannels();
+    const categoryChannels = this.getCategoryChannels();
     for (const channel of categoryChannels) {
       if (channel.name !== `voice ${channel.position + 1}`) {
         await this.updateChannel(channel, channel.position);
@@ -83,7 +79,7 @@ export class ChannelsGateway {
   }
 
   private async createEmptyChannelIfNeeded(): Promise<void> {
-    const categoryChannels = await this.getCategoryChannels();
+    const categoryChannels = this.getCategoryChannels();
     const isNoneEmpty = !categoryChannels.some(channel => channel.members.size === 0);
     if (isNoneEmpty) {
       await this.createChannel(categoryChannels.length);
@@ -91,7 +87,7 @@ export class ChannelsGateway {
   }
 
   private async removeAllEmptyChannelsExceptFirst(): Promise<void> {
-    const categoryChannels = await this.getCategoryChannels();
+    const categoryChannels = this.getCategoryChannels();
     for (const channel of categoryChannels) {
       if (channel.position !== 0 && channel.members.size === 0) {
         await this.deleteChannel(channel);

@@ -1,9 +1,12 @@
 import { Param, ParamType } from '@discord-nestjs/core';
-import { IsOptional, Matches, MaxLength, MinLength } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsHexColor, IsOptional, Matches, MaxLength, MinLength } from 'class-validator';
+import { HexColorString } from 'discord.js';
 
 export class CreateDynamicRoleDto {
   @MinLength(3)
   @MaxLength(18)
+  @Transform(({ value }) => value.toLowerCase())
   @Param({
     name: 'name',
     description: 'The name of the role',
@@ -22,7 +25,7 @@ export class CreateDynamicRoleDto {
   })
   readonly shortDescription: string;
 
-  @Matches(/<a?:.+?:\d{18}>|\p{Extended_Pictographic}/gu, { message: 'Invalid emoji' })
+  @Matches(/<a?:.+?:\d{18,20}>|\p{Extended_Pictographic}/gu, { message: 'Invalid emoji' })
   @Param({
     name: 'emoji',
     description: 'Id of the emoji that will be displayed related to the role',
@@ -31,8 +34,17 @@ export class CreateDynamicRoleDto {
   })
   readonly emoji: string;
 
+  @IsHexColor()
+  @Param({
+    name: 'color',
+    description: 'A hex value for a color thats associated with the role',
+    required: true,
+    type: ParamType.STRING
+  })
+  readonly color: HexColorString;
+
   @IsOptional()
-  @Matches(/^<?#?[0-9]{18}>?$/, { message: 'Invalid channel id' })
+  @Matches(/^<?#?\d{18,20}>?$/, { message: 'Invalid channel id' })
   @Param({
     name: 'channel-id',
     description: 'Id of the channel if it already exists',

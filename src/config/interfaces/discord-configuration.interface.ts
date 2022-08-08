@@ -6,4 +6,6 @@ export default interface IDiscordConfiguration {
   voiceCategoryId: string;
   memberRoleId: string;
   playerRoleId: string;
+  dynamicRolesDividerId: string;
+  dynamicRolesCategoryId: string;
 }
