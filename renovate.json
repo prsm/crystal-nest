@@ -7,7 +7,7 @@
   "labels": ["dependencies"],
   "bumpVersion": "prerelease",
   "dependencyDashboard": true,
-  "dependencyDashboardAutoclose": false,
+  "dependencyDashboardAutoclose": true,
   "dependencyDashboardLabels": ["dashboard", "wontfix"],
   "docker": {
     "versioning": "docker"
