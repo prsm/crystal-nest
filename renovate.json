@@ -7,7 +7,7 @@
   "labels": ["dependencies"],
   "bumpVersion": "prerelease",
   "dependencyDashboard": true,
-  "dependencyDashboardAutoclose": true,
+  "dependencyDashboardAutoclose": false,
   "dependencyDashboardLabels": ["dashboard", "wontfix"],
   "docker": {
     "versioning": "docker"
@@ -17,21 +17,17 @@
     "versioning": "node",
     "pinDigests": false
   },
-  "schedule": ["after 10pm and before 5:00am every day"],
-  "timezone": "Europe/Zurich",
   "lockFileMaintenance": {
     "enabled": true,
     "recreateClosed": true,
     "rebaseStalePrs": true,
     "branchTopic": "lock-file-maintenance",
     "commitMessageAction": "Lock file maintenance",
-    "schedule": ["after 10pm and before 5:00am every day"],
     "prBodyDefinitions": {
       "Change": "All locks refreshed"
     }
   },
   "vulnerabilityAlerts": {
-    "schedule": ["after 10pm and before 5:00am every day"],
     "dependencyDashboardApproval": false,
     "stabilityDays": 0,
     "rangeStrategy": "update-lockfile",
