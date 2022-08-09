@@ -3,7 +3,7 @@
   "extends": ["config:base", ":rebaseStalePrs"],
   "assignees": ["jonas.schultheiss"],
   "reviewers": ["jonas.schultheiss"],
-  "baseBranches": ["development"],
+  "baseBranches": ["develop"],
   "labels": ["dependencies"],
   "bumpVersion": "prerelease",
   "dependencyDashboard": true,
