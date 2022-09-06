@@ -1,14 +1,7 @@
 import { CommandExecutionContext, DiscordCommand, SubCommand, UseCollectors, UseFilters } from '@discord-nestjs/core';
 import { Logger } from '@nestjs/common';
-import {
-  CommandInteraction,
-  GuildMemberRoleManager,
-  MessageActionRow,
-  MessageActionRowComponent,
-  MessageButton
-} from 'discord.js';
-import { MessageButtonStyles } from 'discord.js/typings/enums';
-import { PrismaExceptionFilter } from 'src/bot/filter/prisma-exception.filter';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, GuildMemberRoleManager } from 'discord.js';
+import { PrismaExceptionFilter } from '../../../filter/prisma-exception.filter';
 import { DynamicRolesCollector } from '../../dynamic-roles.collector';
 import { DynamicRolesService } from '../../dynamic-roles.service';
 
@@ -27,18 +20,14 @@ export class SelectDynamicRolesSubCommand implements DiscordCommand {
 
   async handler(interaction: CommandInteraction, executionContext: CommandExecutionContext): Promise<void> {
     const roles = await this.dynamicRolesService.findAll();
-    const components = new MessageActionRow<MessageActionRowComponent>();
+    const components = new ActionRowBuilder<ButtonBuilder>();
     const roleManager = interaction.member.roles as GuildMemberRoleManager;
     for (const { name, emoji, roleId } of roles) {
-      const button = new MessageButton()
+      const button = new ButtonBuilder()
         .setLabel(name)
         .setEmoji(emoji)
         .setCustomId(name)
-        .setStyle(
-          roleManager.cache.some(role => role.id === roleId)
-            ? MessageButtonStyles.PRIMARY
-            : MessageButtonStyles.SECONDARY
-        );
+        .setStyle(roleManager.cache.some(role => role.id === roleId) ? ButtonStyle.Primary : ButtonStyle.Secondary);
       components.addComponents(button);
     }
 

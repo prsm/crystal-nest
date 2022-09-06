@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DynamicRole } from '@prisma/client';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { CreateDynamicRoleDto } from './dto/create-dynamic-role.dto';
 import { UpdateDynamicRoleDto } from './dto/update-dynamic-role.dto';
 

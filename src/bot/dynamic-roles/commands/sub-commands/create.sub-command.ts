@@ -8,8 +8,8 @@ import {
   UsePipes
 } from '@discord-nestjs/core';
 import { Logger } from '@nestjs/common';
-import { CommandValidationFilter } from 'src/bot/filter/command-validation.filter';
-import { PrismaExceptionFilter } from 'src/bot/filter/prisma-exception.filter';
+import { CommandValidationFilter } from '../../../filter/command-validation.filter';
+import { PrismaExceptionFilter } from '../../../filter/prisma-exception.filter';
 import { CreateDynamicRoleDto } from '../../dto/create-dynamic-role.dto';
 import { DynamicRolesService } from '../../dynamic-roles.service';
 
@@ -37,11 +37,12 @@ export class CreateDynamicRoleSubCommand implements DiscordTransformedCommand<Cr
     } catch (error) {
       const loggingString = `Failed to create dynamic role, reverted changes`;
       this.logger.log(loggingString);
-      return interaction.reply({ content: loggingString, ephemeral: true });
+      await interaction.reply({ content: loggingString, ephemeral: true });
+      return;
     }
 
     const loggingString = `Successfully created dynamic role with name ${dynamicRole.name}`;
     this.logger.log(loggingString);
-    return interaction.reply({ content: loggingString, ephemeral: true });
+    await interaction.reply({ content: loggingString, ephemeral: true });
   }
 }
