@@ -6,7 +6,7 @@ import { HexColorString } from 'discord.js';
 export class CreateDynamicRoleDto {
   @MinLength(3)
   @MaxLength(18)
-  @Transform(({ value }) => value.toLowerCase())
+  @Transform(({ value }) => (value ? value.toLowerCase() : value))
   @Param({
     name: 'name',
     description: 'The name of the role',

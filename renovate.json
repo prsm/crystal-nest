@@ -23,6 +23,7 @@
     "enabled": true,
     "recreateClosed": true,
     "rebaseStalePrs": true,
+    "automerge": true,
     "branchTopic": "lock-file-maintenance",
     "commitMessageAction": "Lock file maintenance",
     "schedule": ["after 10pm and before 5:00am every day"],

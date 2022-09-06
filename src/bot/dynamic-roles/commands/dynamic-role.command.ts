@@ -11,8 +11,8 @@ import { UpdateDynamicRoleSubCommand } from './sub-commands/update.sub-command';
   description: 'Dynamic roles. Used for accessing hidden channels',
   include: [
     CreateDynamicRoleSubCommand,
-    // UpdateDynamicRoleSubCommand,
-    // DeleteDynamicRoleSubCommand,
+    UpdateDynamicRoleSubCommand,
+    DeleteDynamicRoleSubCommand,
     SelectDynamicRolesSubCommand
   ]
 })

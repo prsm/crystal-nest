@@ -7,7 +7,7 @@ export class UpdateDynamicRoleDto {
   @IsNotEmpty()
   @MinLength(3)
   @MaxLength(18)
-  @Transform(({ value }) => value.toLowerCase())
+  @Transform(({ value }) => (value ? value.toLowerCase() : value))
   @Param({
     name: 'name',
     description: 'The name of the role',
@@ -19,7 +19,7 @@ export class UpdateDynamicRoleDto {
   @IsOptional()
   @MinLength(3)
   @MaxLength(18)
-  @Transform(({ value }) => value.toLowerCase())
+  @Transform(({ value }) => (value ? value.toLowerCase() : value))
   @Param({
     name: 'new-name',
     description: 'A new name for the role',

@@ -5,9 +5,13 @@ import {
   SubCommand,
   TransformedCommandExecutionContext,
   UseFilters,
+  UseGuards,
   UsePipes
 } from '@discord-nestjs/core';
 import { Logger } from '@nestjs/common';
+import { roleMention } from 'discord.js';
+import { PrismaNotFoundExceptionFilter } from 'src/bot/filter/prisma-not-found.filter';
+import { InteractionFromPermittedUserGuard } from 'src/bot/role.guard';
 import { CommandValidationFilter } from '../../../filter/command-validation.filter';
 import { PrismaExceptionFilter } from '../../../filter/prisma-exception.filter';
 import { UpdateDynamicRoleDto } from '../../dto/update-dynamic-role.dto';
@@ -18,7 +22,8 @@ import { DynamicRolesService } from '../../dynamic-roles.service';
   description: 'Updates an existing dynamic role'
 })
 @UsePipes(TransformPipe, ValidationPipe)
-@UseFilters(CommandValidationFilter, PrismaExceptionFilter)
+@UseFilters(CommandValidationFilter, PrismaExceptionFilter, PrismaNotFoundExceptionFilter)
+@UseGuards(InteractionFromPermittedUserGuard)
 export class UpdateDynamicRoleSubCommand implements DiscordTransformedCommand<UpdateDynamicRoleDto> {
   private readonly logger: Logger;
 
@@ -30,9 +35,15 @@ export class UpdateDynamicRoleSubCommand implements DiscordTransformedCommand<Up
     @Payload() updateDynamicRoleDto: UpdateDynamicRoleDto,
     { interaction }: TransformedCommandExecutionContext
   ): Promise<void> {
-    const dynamicRole = await this.dynamicRolesService.update(updateDynamicRoleDto);
-    const loggingString = `Successfully updated dynamic role with name ${dynamicRole.name}`;
-    this.logger.log(loggingString);
-    await interaction.reply({ content: loggingString, ephemeral: true });
+    try {
+      const dynamicRole = await this.dynamicRolesService.update(updateDynamicRoleDto);
+      const loggingString = `Successfully updated dynamic role ${roleMention(dynamicRole.roleId)}`;
+      this.logger.log(loggingString);
+      await interaction.reply({ content: loggingString, ephemeral: true });
+    } catch (error) {
+      const loggingString = `Failed to update dynamic role`;
+      this.logger.log(loggingString);
+      await interaction.reply({ content: loggingString, ephemeral: true });
+    }
   }
 }
