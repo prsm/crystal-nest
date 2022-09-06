@@ -4,15 +4,17 @@ import { ConfigService } from '@nestjs/config';
 import { DynamicRole } from '@prisma/client';
 import {
   ButtonInteraction,
+  ChannelType,
   Client,
   GuildChannel,
   GuildMember,
+  GuildPremiumTier,
   HexColorString,
-  Permissions,
+  PermissionsBitField,
   Role,
   TextChannel
 } from 'discord.js';
-import { ChannelTypes } from 'discord.js/typings/enums';
+
 import { GuildService } from '../guild.service';
 import { CreateDynamicRoleDto } from './dto/create-dynamic-role.dto';
 import { UpdateDynamicRoleDto } from './dto/update-dynamic-role.dto';
@@ -111,18 +113,19 @@ export class DynamicRolesService extends GuildService {
   private async createChannel(name: string, emoji: string, topic: string, roleId: string): Promise<TextChannel> {
     const guild = await this.getGuild();
     const parent = this.getDynamicRolesCategoryId();
-    return guild.channels.create(`${emoji} ${name}`, {
-      type: ChannelTypes.GUILD_TEXT,
+    return guild.channels.create<ChannelType.GuildText>({
+      name: `${emoji} ${name}`,
+      type: ChannelType.GuildText,
       topic,
       parent,
       permissionOverwrites: [
         {
           id: guild.id,
-          deny: [Permissions.FLAGS.VIEW_CHANNEL]
+          deny: [PermissionsBitField.Flags.ViewChannel]
         },
         {
           id: roleId,
-          allow: [Permissions.FLAGS.VIEW_CHANNEL]
+          allow: [PermissionsBitField.Flags.ViewChannel]
         }
       ]
     });
@@ -145,11 +148,11 @@ export class DynamicRolesService extends GuildService {
         ? [
             {
               id: guild.id,
-              deny: [Permissions.FLAGS.VIEW_CHANNEL]
+              deny: [PermissionsBitField.Flags.ViewChannel]
             },
             {
               id: roleId,
-              allow: [Permissions.FLAGS.VIEW_CHANNEL]
+              allow: [PermissionsBitField.Flags.ViewChannel]
             }
           ]
         : undefined
@@ -164,7 +167,9 @@ export class DynamicRolesService extends GuildService {
   }
   private async getunicodeEmoji(emoji: string): Promise<string> {
     const guild = await this.getGuild();
-    return guild.premiumTier !== 'NONE' && guild.premiumTier !== 'TIER_1' ? emoji : undefined;
+    return guild.premiumTier !== GuildPremiumTier.None && guild.premiumTier !== GuildPremiumTier.Tier1
+      ? emoji
+      : undefined;
   }
 
   private async createRole(name: string, color: HexColorString, emoji: string): Promise<Role> {

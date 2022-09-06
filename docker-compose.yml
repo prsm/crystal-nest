@@ -17,7 +17,7 @@ services:
     env_file:
       - ./.env
     ports:
-      - '9230:9229'
+      - '9229:9229'
     links:
       - bot-database
     depends_on:

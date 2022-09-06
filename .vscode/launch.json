@@ -5,7 +5,7 @@
       "name": "Docker: Attach to Node",
       "type": "node",
       "request": "attach",
-      "port": 9230,
+      "port": 9229,
       "address": "localhost",
       "localRoot": "${workspaceFolder}",
       "remoteRoot": "/usr/src/app",

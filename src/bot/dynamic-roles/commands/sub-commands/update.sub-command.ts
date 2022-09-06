@@ -8,8 +8,8 @@ import {
   UsePipes
 } from '@discord-nestjs/core';
 import { Logger } from '@nestjs/common';
-import { CommandValidationFilter } from 'src/bot/filter/command-validation.filter';
-import { PrismaExceptionFilter } from 'src/bot/filter/prisma-exception.filter';
+import { CommandValidationFilter } from '../../../filter/command-validation.filter';
+import { PrismaExceptionFilter } from '../../../filter/prisma-exception.filter';
 import { UpdateDynamicRoleDto } from '../../dto/update-dynamic-role.dto';
 import { DynamicRolesService } from '../../dynamic-roles.service';
 
@@ -33,6 +33,6 @@ export class UpdateDynamicRoleSubCommand implements DiscordTransformedCommand<Up
     const dynamicRole = await this.dynamicRolesService.update(updateDynamicRoleDto);
     const loggingString = `Successfully updated dynamic role with name ${dynamicRole.name}`;
     this.logger.log(loggingString);
-    return interaction.reply({ content: loggingString, ephemeral: true });
+    await interaction.reply({ content: loggingString, ephemeral: true });
   }
 }
