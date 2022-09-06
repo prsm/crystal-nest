@@ -11,7 +11,7 @@ model DynamicRole {
   id                  String   @id @default(cuid())
   name                String   @unique @db.VarChar(18)
   shortDescription    String   @db.VarChar(42)
-  emoji               String   @unique
+  guildEmojiId        String   @unique
   amountOfSubscribers Int
   channelId           String   @unique @db.VarChar(20)
   roleId              String   @unique

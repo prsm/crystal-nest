@@ -10,6 +10,7 @@ import {
   ChannelType,
   Client,
   GuildChannel,
+  GuildEmoji,
   GuildMember,
   GuildMemberRoleManager,
   GuildPremiumTier,
@@ -43,10 +44,10 @@ export class DynamicRolesService extends GuildService {
   async createButtonComponents(roleManager: GuildMemberRoleManager): Promise<ActionRowBuilder<ButtonBuilder>> {
     const components = new ActionRowBuilder<ButtonBuilder>();
     const roles = await this.findAll();
-    for (const { name, emoji, roleId } of roles) {
+    for (const { name, guildEmojiId, roleId } of roles) {
       const button = new ButtonBuilder()
         .setLabel(name)
-        .setEmoji(emoji)
+        .setEmoji(guildEmojiId)
         .setCustomId(name)
         .setStyle(roleManager.cache.some(role => role.id === roleId) ? ButtonStyle.Primary : ButtonStyle.Secondary);
       components.addComponents(button);
@@ -71,16 +72,16 @@ export class DynamicRolesService extends GuildService {
 
   async create(createdBy: string, createDynamicRoleDto: CreateDynamicRoleDto): Promise<DynamicRole> {
     const guild = await this.getGuild();
-    const { channelId, name, shortDescription, color, emoji } = createDynamicRoleDto;
+    const { channelId, name, shortDescription, color, guildEmojiId } = createDynamicRoleDto;
     let role: Role;
     let channel: TextChannel | GuildChannel;
     try {
-      role = await this.createRole(name, color, emoji);
+      role = await this.createRole(name, color, guildEmojiId);
 
       if (channelId) {
-        channel = await this.updateChannel(channelId, name, emoji, shortDescription, role.id);
+        channel = await this.updateChannel(channelId, name, shortDescription, role.id);
       } else {
-        channel = await this.createChannel(name, emoji, shortDescription, role.id);
+        channel = await this.createChannel(name, shortDescription, role.id);
       }
 
       // TODO: Update dashboard
@@ -110,20 +111,15 @@ export class DynamicRolesService extends GuildService {
   }
 
   async update(updateDynamicRoleDto: UpdateDynamicRoleDto): Promise<DynamicRole> {
-    const { name, newName, emoji, shortDescription, color } = updateDynamicRoleDto;
+    const { name, newName, guildEmojiId, shortDescription, color } = updateDynamicRoleDto;
     const currentDynamicRole = await this.dynamicRolesRepository.findOneByName(name);
-    await this.updateChannel(
-      currentDynamicRole.channelId,
-      newName || currentDynamicRole.name,
-      emoji || currentDynamicRole.emoji,
-      shortDescription
-    );
+    await this.updateChannel(currentDynamicRole.channelId, newName || currentDynamicRole.name, shortDescription);
 
     await this.updateRole(
       currentDynamicRole.roleId,
       newName || currentDynamicRole.name,
       color || (currentDynamicRole.color as HexColorString),
-      emoji || currentDynamicRole.emoji
+      guildEmojiId || currentDynamicRole.guildEmojiId
     );
 
     return this.dynamicRolesRepository.update(updateDynamicRoleDto);
@@ -137,11 +133,11 @@ export class DynamicRolesService extends GuildService {
     return this.dynamicRolesRepository.remove(name);
   }
 
-  private async createChannel(name: string, emoji: string, topic: string, roleId: string): Promise<TextChannel> {
+  private async createChannel(name: string, topic: string, roleId: string): Promise<TextChannel> {
     const guild = await this.getGuild();
     const parent = this.getDynamicRolesCategoryId();
     return guild.channels.create<ChannelType.GuildText>({
-      name: `${emoji} ${name}`,
+      name,
       type: ChannelType.GuildText,
       topic,
       parent,
@@ -158,17 +154,11 @@ export class DynamicRolesService extends GuildService {
     });
   }
 
-  private async updateChannel(
-    channelId: string,
-    name: string,
-    emoji: string,
-    topic?: string,
-    roleId?: string
-  ): Promise<GuildChannel> {
+  private async updateChannel(channelId: string, name: string, topic?: string, roleId?: string): Promise<GuildChannel> {
     const guild = await this.getGuild();
     const parent = this.getDynamicRolesCategoryId();
     return guild.channels.edit(channelId, {
-      name: `${emoji} ${name}`,
+      name,
       topic,
       parent,
       permissionOverwrites: roleId
@@ -192,35 +182,40 @@ export class DynamicRolesService extends GuildService {
     const dividerRole = guild.roles.cache.find(role => role.id === dividerRoleId);
     return dividerRole.position - 1;
   }
-  private async getunicodeEmoji(emoji: string): Promise<string> {
+  private async getGuildEmoji(guildEmojiId: string): Promise<GuildEmoji> {
     const guild = await this.getGuild();
     return guild.premiumTier !== GuildPremiumTier.None && guild.premiumTier !== GuildPremiumTier.Tier1
-      ? emoji
+      ? guild.emojis.cache.get(guildEmojiId)
       : undefined;
   }
 
-  private async createRole(name: string, color: HexColorString, emoji: string): Promise<Role> {
+  private async createRole(name: string, color: HexColorString, guildEmojiId: string): Promise<Role> {
     const guild = await this.getGuild();
     const position = await this.getNewRolePosition();
-    const unicodeEmoji = await this.getunicodeEmoji(emoji);
+    const guildEmoji = await this.getGuildEmoji(guildEmojiId);
     return guild.roles.create({
       color,
       name,
-      unicodeEmoji,
+      icon: guildEmoji,
       hoist: false,
       mentionable: true,
       position
     });
   }
 
-  private async updateRole(roleId: string, name?: string, color?: HexColorString, emoji?: string): Promise<Role> {
+  private async updateRole(
+    roleId: string,
+    name?: string,
+    color?: HexColorString,
+    guildEmojiId?: string
+  ): Promise<Role> {
     const guild = await this.getGuild();
     const position = await this.getNewRolePosition();
-    const unicodeEmoji = emoji ? await this.getunicodeEmoji(emoji) : undefined;
+    const guildEmoji = guildEmojiId ? await this.getGuildEmoji(guildEmojiId) : undefined;
     return guild.roles.edit(roleId, {
       color,
       name,
-      unicodeEmoji,
+      icon: guildEmoji,
       hoist: false,
       mentionable: true,
       position
