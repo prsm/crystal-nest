@@ -5,10 +5,12 @@ import {
   SubCommand,
   TransformedCommandExecutionContext,
   UseFilters,
+  UseGuards,
   UsePipes
 } from '@discord-nestjs/core';
 import { Logger } from '@nestjs/common';
 import { PrismaNotFoundExceptionFilter } from 'src/bot/filter/prisma-not-found.filter';
+import { InteractionFromPermittedUserGuard } from 'src/bot/role.guard';
 import { CommandValidationFilter } from '../../../filter/command-validation.filter';
 import { PrismaExceptionFilter } from '../../../filter/prisma-exception.filter';
 import { DeleteDynamicRoleDto } from '../../dto/delete-dynamic-role.dto';
@@ -20,6 +22,7 @@ import { DynamicRolesService } from '../../dynamic-roles.service';
 })
 @UsePipes(TransformPipe, ValidationPipe)
 @UseFilters(CommandValidationFilter, PrismaExceptionFilter, PrismaNotFoundExceptionFilter)
+@UseGuards(InteractionFromPermittedUserGuard)
 export class DeleteDynamicRoleSubCommand implements DiscordTransformedCommand<DeleteDynamicRoleDto> {
   private readonly logger: Logger;
 

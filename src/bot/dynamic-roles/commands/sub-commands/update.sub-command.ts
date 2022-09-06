@@ -5,11 +5,13 @@ import {
   SubCommand,
   TransformedCommandExecutionContext,
   UseFilters,
+  UseGuards,
   UsePipes
 } from '@discord-nestjs/core';
 import { Logger } from '@nestjs/common';
 import { roleMention } from 'discord.js';
 import { PrismaNotFoundExceptionFilter } from 'src/bot/filter/prisma-not-found.filter';
+import { InteractionFromPermittedUserGuard } from 'src/bot/role.guard';
 import { CommandValidationFilter } from '../../../filter/command-validation.filter';
 import { PrismaExceptionFilter } from '../../../filter/prisma-exception.filter';
 import { UpdateDynamicRoleDto } from '../../dto/update-dynamic-role.dto';
@@ -21,6 +23,7 @@ import { DynamicRolesService } from '../../dynamic-roles.service';
 })
 @UsePipes(TransformPipe, ValidationPipe)
 @UseFilters(CommandValidationFilter, PrismaExceptionFilter, PrismaNotFoundExceptionFilter)
+@UseGuards(InteractionFromPermittedUserGuard)
 export class UpdateDynamicRoleSubCommand implements DiscordTransformedCommand<UpdateDynamicRoleDto> {
   private readonly logger: Logger;
 
