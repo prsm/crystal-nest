@@ -1,23 +1,16 @@
 import { Catch, DiscordArgumentMetadata, DiscordExceptionFilter } from '@discord-nestjs/core';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { NotFoundError } from '@prisma/client/runtime';
 import { EmbedBuilder } from 'discord.js';
 
-@Catch(PrismaClientKnownRequestError)
-export class PrismaExceptionFilter implements DiscordExceptionFilter {
-  async catch(
-    exception: PrismaClientKnownRequestError,
-    metadata: DiscordArgumentMetadata<'interactionCreate'>
-  ): Promise<void> {
+@Catch(NotFoundError)
+export class PrismaNotFoundExceptionFilter implements DiscordExceptionFilter {
+  async catch(exception: NotFoundError, metadata: DiscordArgumentMetadata<'interactionCreate'>): Promise<void> {
     const [interaction] = metadata.eventArgs;
-    console.log(
-      '🚀 ~ file: prisma-exception.filter.ts ~ line 28 ~ PrismaExceptionFilter ~ exception.cause ',
-      JSON.stringify(exception, undefined, 2)
-    );
 
     if (interaction.isCommand()) {
       const embed = new EmbedBuilder({
         author: {
-          name: `Prisma ${exception.clientVersion}`,
+          name: 'Prisma',
           iconURL: 'https://avatars.githubusercontent.com/u/17219288?s=200&v=4',
           url: 'https://www.prisma.io/'
         },
@@ -29,12 +22,8 @@ export class PrismaExceptionFilter implements DiscordExceptionFilter {
       })
         .setColor('Red')
         .addFields({
-          name: exception.code,
-          value: exception.cause
-            ? (exception.cause as string)
-            : exception.meta?.cause
-            ? (exception.meta.cause as string)
-            : 'Internal error'
+          name: exception.name,
+          value: exception.message
         });
 
       await interaction.reply({ embeds: [embed], ephemeral: true });

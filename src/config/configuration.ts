@@ -10,7 +10,8 @@ export default (): IConfiguration => ({
     playerRoleId: process.env.DISCORD_PLAYER_ROLE_ID,
     memberRoleId: process.env.DISCORD_MEMBER_ROLE_ID,
     dynamicRolesDividerId: process.env.DISCORD_DYNAMIC_ROLES_DIVIDER_ID,
-    dynamicRolesCategoryId: process.env.DISCORD_DYNAMIC_ROLES_CATEGORY_ID
+    dynamicRolesCategoryId: process.env.DISCORD_DYNAMIC_ROLES_CATEGORY_ID,
+    retiredDynamicRolesCategoryId: process.env.DISCORD_RETIRED_DYNAMIC_ROLES_CATEGORY_ID
   },
   db: {
     user: process.env.POSTGRES_USER,

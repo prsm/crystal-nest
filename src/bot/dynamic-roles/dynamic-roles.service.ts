@@ -3,16 +3,22 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DynamicRole } from '@prisma/client';
 import {
+  ActionRowBuilder,
+  ButtonBuilder,
   ButtonInteraction,
+  ButtonStyle,
   ChannelType,
   Client,
   GuildChannel,
   GuildMember,
+  GuildMemberRoleManager,
   GuildPremiumTier,
   HexColorString,
   PermissionsBitField,
   Role,
-  TextChannel
+  roleMention,
+  TextChannel,
+  userMention
 } from 'discord.js';
 
 import { GuildService } from '../guild.service';
@@ -34,17 +40,32 @@ export class DynamicRolesService extends GuildService {
     this.logger = new Logger(DynamicRolesService.name);
   }
 
+  async createButtonComponents(roleManager: GuildMemberRoleManager): Promise<ActionRowBuilder<ButtonBuilder>> {
+    const components = new ActionRowBuilder<ButtonBuilder>();
+    const roles = await this.findAll();
+    for (const { name, emoji, roleId } of roles) {
+      const button = new ButtonBuilder()
+        .setLabel(name)
+        .setEmoji(emoji)
+        .setCustomId(name)
+        .setStyle(roleManager.cache.some(role => role.id === roleId) ? ButtonStyle.Primary : ButtonStyle.Secondary);
+      components.addComponents(button);
+    }
+
+    return components;
+  }
+
   async handleRoleChange(interaction: ButtonInteraction): Promise<string> {
     const { roleId, name } = await this.dynamicRolesRepository.findOneByName(interaction.customId);
     const member = interaction.member as GuildMember;
     if (member.roles.cache.some(role => role.id === roleId)) {
       await member.roles.remove(roleId);
       this.dynamicRolesRepository.removeSubscriber(name);
-      return `Removed role ${name} from member ${member.id}`;
+      return `Removed role ${roleMention(roleId)} from member ${userMention(member.id)}`;
     } else {
       await member.roles.add(roleId);
       this.dynamicRolesRepository.addSubscriber(name);
-      return `Added the role ${name} to member ${member.id}`;
+      return `Added the role ${roleMention(roleId)}  to member ${userMention(member.id)}`;
     }
   }
 
@@ -89,24 +110,30 @@ export class DynamicRolesService extends GuildService {
   }
 
   async update(updateDynamicRoleDto: UpdateDynamicRoleDto): Promise<DynamicRole> {
-    const guild = await this.getGuild();
-    const { name, newName, emoji, shortDescription } = updateDynamicRoleDto;
+    const { name, newName, emoji, shortDescription, color } = updateDynamicRoleDto;
     const currentDynamicRole = await this.dynamicRolesRepository.findOneByName(name);
-    const currentChannel = await guild.channels.fetch(currentDynamicRole.channelId);
-    const currentRole = await guild.roles.fetch(currentDynamicRole.roleId);
-    try {
-      await this.updateChannel(
-        currentChannel.id,
-        newName || currentDynamicRole.name,
-        emoji || currentDynamicRole.emoji,
-        shortDescription
-      );
-    } catch (error) {}
+    await this.updateChannel(
+      currentDynamicRole.channelId,
+      newName || currentDynamicRole.name,
+      emoji || currentDynamicRole.emoji,
+      shortDescription
+    );
+
+    await this.updateRole(
+      currentDynamicRole.roleId,
+      newName || currentDynamicRole.name,
+      color || (currentDynamicRole.color as HexColorString),
+      emoji || currentDynamicRole.emoji
+    );
 
     return this.dynamicRolesRepository.update(updateDynamicRoleDto);
   }
 
   async delete(name: string): Promise<DynamicRole> {
+    const { name: confirmedName, channelId, roleId } = await this.dynamicRolesRepository.findOneByName(name);
+    const guild = await this.getGuild();
+    await guild.roles.delete(roleId);
+    await this.retireChannel(channelId, confirmedName);
     return this.dynamicRolesRepository.remove(name);
   }
 
@@ -197,6 +224,31 @@ export class DynamicRolesService extends GuildService {
       hoist: false,
       mentionable: true,
       position
+    });
+  }
+
+  private async retireChannel(channelId: string, name: string): Promise<GuildChannel> {
+    const guild = await this.getGuild();
+    const parent = this.getRetiredDynamicRolesCategoryId();
+    return guild.channels.edit(channelId, {
+      name,
+      parent,
+      permissionOverwrites: [
+        {
+          id: guild.id,
+          deny: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages]
+        },
+        {
+          id: this.getPlayerRoleId(),
+          allow: [PermissionsBitField.Flags.ViewChannel],
+          deny: [PermissionsBitField.Flags.SendMessages]
+        },
+        {
+          id: this.getMemberRoleId(),
+          allow: [PermissionsBitField.Flags.ViewChannel],
+          deny: [PermissionsBitField.Flags.SendMessages]
+        }
+      ]
     });
   }
 }

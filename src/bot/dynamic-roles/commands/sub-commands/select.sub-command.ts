@@ -1,6 +1,6 @@
-import { CommandExecutionContext, DiscordCommand, SubCommand, UseCollectors, UseFilters } from '@discord-nestjs/core';
+import { DiscordCommand, SubCommand, UseCollectors, UseFilters } from '@discord-nestjs/core';
 import { Logger } from '@nestjs/common';
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, GuildMemberRoleManager } from 'discord.js';
+import { CommandInteraction, GuildMemberRoleManager } from 'discord.js';
 import { PrismaExceptionFilter } from '../../../filter/prisma-exception.filter';
 import { DynamicRolesCollector } from '../../dynamic-roles.collector';
 import { DynamicRolesService } from '../../dynamic-roles.service';
@@ -18,19 +18,13 @@ export class SelectDynamicRolesSubCommand implements DiscordCommand {
     this.logger = new Logger(SelectDynamicRolesSubCommand.name);
   }
 
-  async handler(interaction: CommandInteraction, executionContext: CommandExecutionContext): Promise<void> {
-    const roles = await this.dynamicRolesService.findAll();
-    const components = new ActionRowBuilder<ButtonBuilder>();
+  async handler(interaction: CommandInteraction): Promise<void> {
     const roleManager = interaction.member.roles as GuildMemberRoleManager;
-    for (const { name, emoji, roleId } of roles) {
-      const button = new ButtonBuilder()
-        .setLabel(name)
-        .setEmoji(emoji)
-        .setCustomId(name)
-        .setStyle(roleManager.cache.some(role => role.id === roleId) ? ButtonStyle.Primary : ButtonStyle.Secondary);
-      components.addComponents(button);
-    }
-
-    await interaction.reply({ content: 'AMk, select role', ephemeral: true, components: [components] });
+    const components = await this.dynamicRolesService.createButtonComponents(roleManager);
+    await interaction.reply({
+      content: 'Bitte wähle aus, welche Rollen du haben möchtest\nPlease select which roles you would like to have',
+      ephemeral: true,
+      components: [components]
+    });
   }
 }

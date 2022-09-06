@@ -8,6 +8,8 @@ import {
   UsePipes
 } from '@discord-nestjs/core';
 import { Logger } from '@nestjs/common';
+import { DynamicRole } from '@prisma/client';
+import { roleMention } from 'discord.js';
 import { CommandValidationFilter } from '../../../filter/command-validation.filter';
 import { PrismaExceptionFilter } from '../../../filter/prisma-exception.filter';
 import { CreateDynamicRoleDto } from '../../dto/create-dynamic-role.dto';
@@ -30,7 +32,7 @@ export class CreateDynamicRoleSubCommand implements DiscordTransformedCommand<Cr
     @Payload() createDynamicRoleDto: CreateDynamicRoleDto,
     { interaction }: TransformedCommandExecutionContext
   ): Promise<void> {
-    let dynamicRole;
+    let dynamicRole: DynamicRole;
     const createdBy = interaction.member.user.id;
     try {
       dynamicRole = await this.dynamicRolesService.create(createdBy, createDynamicRoleDto);
@@ -41,7 +43,7 @@ export class CreateDynamicRoleSubCommand implements DiscordTransformedCommand<Cr
       return;
     }
 
-    const loggingString = `Successfully created dynamic role with name ${dynamicRole.name}`;
+    const loggingString = `Successfully created dynamic role ${roleMention(dynamicRole.roleId)}`;
     this.logger.log(loggingString);
     await interaction.reply({ content: loggingString, ephemeral: true });
   }

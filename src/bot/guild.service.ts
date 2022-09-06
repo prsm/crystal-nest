@@ -11,6 +11,7 @@ export class GuildService {
   private static voiceCategoryId: string;
   private static dynamicRolesDividerId: string;
   private static dynamicRolesCategoryId: string;
+  private static retiredDynamicRolesCategoryId: string;
 
   constructor(private readonly client: Client, private readonly configService: ConfigService) {
     GuildService.guildId = this.configService.getOrThrow<string>('discord.guildId');
@@ -21,6 +22,9 @@ export class GuildService {
     GuildService.voiceCategoryId = this.configService.getOrThrow<string>('discord.voiceCategoryId');
     GuildService.dynamicRolesDividerId = this.configService.getOrThrow<string>('discord.dynamicRolesDividerId');
     GuildService.dynamicRolesCategoryId = this.configService.getOrThrow<string>('discord.dynamicRolesCategoryId');
+    GuildService.retiredDynamicRolesCategoryId = this.configService.getOrThrow<string>(
+      'discord.retiredDynamicRolesCategoryId'
+    );
   }
 
   protected async getGuild(): Promise<Guild> {
@@ -61,5 +65,9 @@ export class GuildService {
 
   protected getDynamicRolesCategoryId(): string {
     return GuildService.dynamicRolesCategoryId;
+  }
+
+  protected getRetiredDynamicRolesCategoryId(): string {
+    return GuildService.retiredDynamicRolesCategoryId;
   }
 }
