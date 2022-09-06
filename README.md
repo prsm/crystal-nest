@@ -108,8 +108,8 @@ Deploy image with a postgres db and see the slash commands.
 
 - [x] Init
 - [x] Events
-- [ ] Roles
-- [ ] Channels
+- [x] Roles
+- [x] Channels
 - [ ] Jira integration
 
 See the [open issues](https://github.com/prsm/crystal-nest/issues) for a full list of proposed features (and known issues).

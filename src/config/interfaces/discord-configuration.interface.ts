@@ -8,4 +8,5 @@ export default interface IDiscordConfiguration {
   playerRoleId: string;
   dynamicRolesDividerId: string;
   dynamicRolesCategoryId: string;
+  retiredDynamicRolesCategoryId: string;
 }
