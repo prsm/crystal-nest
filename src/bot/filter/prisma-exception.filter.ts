@@ -1,6 +1,6 @@
 import { Catch, DiscordArgumentMetadata, DiscordExceptionFilter } from '@discord-nestjs/core';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 
 @Catch(PrismaClientKnownRequestError)
 export class PrismaExceptionFilter implements DiscordExceptionFilter {
@@ -147,8 +147,7 @@ export class PrismaExceptionFilter implements DiscordExceptionFilter {
     }
 
     if (interaction.isCommand()) {
-      const embed = new MessageEmbed({
-        color: 'RED',
+      const embed = new EmbedBuilder({
         author: {
           name: 'Prisma',
           iconURL: 'https://avatars.githubusercontent.com/u/17219288?s=200&v=4',
@@ -159,12 +158,14 @@ export class PrismaExceptionFilter implements DiscordExceptionFilter {
             'This is a error message from the ORM.\n' +
             'If this does not make sense to you, write a message with the error code to a moderator or developer.'
         }
-      }).addFields({
-        name: exception.code,
-        value: errorMessage
-      });
+      })
+        .setColor('Red')
+        .addFields({
+          name: exception.code,
+          value: errorMessage
+        });
 
-      return interaction.reply({ embeds: [embed], ephemeral: true });
+      await interaction.reply({ embeds: [embed], ephemeral: true });
     }
   }
 }

@@ -1,10 +1,9 @@
 import { InteractionEventCollector, On } from '@discord-nestjs/core';
 import { Logger } from '@nestjs/common';
-import { ButtonInteraction } from 'discord.js';
-import { MessageComponentTypes } from 'discord.js/typings/enums';
+import { ButtonInteraction, ComponentType } from 'discord.js';
 import { DynamicRolesService } from './dynamic-roles.service';
 
-@InteractionEventCollector({ time: 3 * 1000, componentType: MessageComponentTypes.BUTTON })
+@InteractionEventCollector({ time: 3 * 1000, componentType: ComponentType.Button })
 export class DynamicRolesCollector {
   private readonly logger: Logger;
   constructor(private readonly dynamicRolesService: DynamicRolesService) {
