@@ -41,19 +41,26 @@ export class DynamicRolesService extends GuildService {
     this.logger = new Logger(DynamicRolesService.name);
   }
 
-  async createButtonComponents(roleManager: GuildMemberRoleManager): Promise<ActionRowBuilder<ButtonBuilder>> {
-    const components = new ActionRowBuilder<ButtonBuilder>();
+  async createButtonComponents(roleManager: GuildMemberRoleManager): Promise<ActionRowBuilder<ButtonBuilder>[]> {
     const roles = await this.findAll();
+    const buttons: ButtonBuilder[] = [];
     for (const { name, guildEmojiId, roleId } of roles) {
       const button = new ButtonBuilder()
         .setLabel(name)
         .setEmoji(guildEmojiId)
         .setCustomId(name)
         .setStyle(roleManager.cache.some(role => role.id === roleId) ? ButtonStyle.Primary : ButtonStyle.Secondary);
-      components.addComponents(button);
+      buttons.push(button);
+    }
+    const rows: ActionRowBuilder<ButtonBuilder>[] = [];
+    const buttonLength = buttons.length;
+    for (let index = 0; index < Math.ceil(buttonLength / 5); index++) {
+      const row = new ActionRowBuilder<ButtonBuilder>();
+      row.addComponents(...buttons.splice(0, 5));
+      rows.push(row);
     }
 
-    return components;
+    return rows;
   }
 
   async handleRoleChange(interaction: ButtonInteraction): Promise<string> {

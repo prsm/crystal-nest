@@ -24,7 +24,7 @@ export class SelectDynamicRolesSubCommand implements DiscordCommand {
     await interaction.reply({
       content: 'Bitte wähle aus, welche Rollen du haben möchtest\nPlease select which roles you would like to have',
       ephemeral: true,
-      components: [components]
+      components: components
     });
   }
 }
