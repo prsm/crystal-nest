@@ -343,10 +343,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@discord-nestjs/common@4.0.6":
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/@discord-nestjs/common/-/common-4.0.6.tgz#73b83ae679e0a53a08f81837ad40dd5de3148995"
-  integrity sha512-rIXM7OCMHWCEu7NtwhMZT/GRyvisA4FNC4pl6poyvG8clio8zDwSm6PLk04btGFGXdEmsBIdiAsNJDsllnEu+A==
+"@discord-nestjs/common@4.0.7":
+  version "4.0.7"
+  resolved "https://registry.yarnpkg.com/@discord-nestjs/common/-/common-4.0.7.tgz#a7b75958df5b903cb1f525699485c1fa9616bf02"
+  integrity sha512-ee5uBhlvFW599KbxjU+91HcOpeHY6jvPhKKz2dPpauUmDFCG24PBE5Tm8PYcgObodjCjbFKGoQBjXjom85AtkQ==
   dependencies:
     "@nestjs/mapped-types" "1.1.0"
     class-transformer "0.5.1"
