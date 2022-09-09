@@ -16,6 +16,6 @@ export class DynamicRolesCollector {
     const loggingString = await this.dynamicRolesService.handleRoleChange(interaction);
     const updatedComponents = await this.dynamicRolesService.createButtonComponents(roleManager);
     this.logger.log(loggingString);
-    interaction.update({ content: loggingString, components: [updatedComponents] });
+    interaction.update({ content: loggingString, components: updatedComponents });
   }
 }

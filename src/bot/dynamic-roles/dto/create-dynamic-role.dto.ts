@@ -25,14 +25,14 @@ export class CreateDynamicRoleDto {
   })
   readonly shortDescription: string;
 
-  @Matches(/<a?:.+?:\d{18,20}>|\p{Extended_Pictographic}/gu, { message: 'Invalid emoji' })
+  @Matches(/^<?#?\d{18,20}>?$/, { message: 'Invalid emoji' })
   @Param({
-    name: 'emoji',
+    name: 'guild-emoji-id',
     description: 'Id of the emoji that will be displayed related to the role',
     required: true,
     type: ParamType.STRING
   })
-  readonly emoji: string;
+  readonly guildEmojiId: string;
 
   @IsHexColor()
   @Param({
