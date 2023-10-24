@@ -1,10 +1,10 @@
 import { Catch, DiscordArgumentMetadata, DiscordExceptionFilter } from '@discord-nestjs/core';
-import { NotFoundError } from '@prisma/client/runtime';
+import { Prisma } from '@prisma/client';
 import { EmbedBuilder } from 'discord.js';
 
-@Catch(NotFoundError)
+@Catch(Prisma.NotFoundError)
 export class PrismaNotFoundExceptionFilter implements DiscordExceptionFilter {
-  async catch(exception: NotFoundError, metadata: DiscordArgumentMetadata<'interactionCreate'>): Promise<void> {
+  async catch(exception: Prisma.NotFoundError, metadata: DiscordArgumentMetadata<'interactionCreate'>): Promise<void> {
     const [interaction] = metadata.eventArgs;
 
     if (interaction.isCommand()) {

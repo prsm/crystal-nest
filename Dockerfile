@@ -26,7 +26,7 @@ FROM stage-base AS stage-production
 COPY --from=stage-build /usr/src/app/dist ./dist
 COPY --from=stage-build /usr/src/app/yarn.lock ./yarn.lock
 
-RUN npm install --location=global prisma@4.3.1
+RUN npm install --location=global prisma@5.4.2
 
 COPY package.json ./
 COPY prisma ./prisma/

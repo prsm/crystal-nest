@@ -1,11 +1,11 @@
 import { Catch, DiscordArgumentMetadata, DiscordExceptionFilter } from '@discord-nestjs/core';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { Prisma } from '@prisma/client';
 import { EmbedBuilder } from 'discord.js';
 
-@Catch(PrismaClientKnownRequestError)
+@Catch(Prisma.PrismaClientKnownRequestError)
 export class PrismaExceptionFilter implements DiscordExceptionFilter {
   async catch(
-    exception: PrismaClientKnownRequestError,
+    exception: Prisma.PrismaClientKnownRequestError,
     metadata: DiscordArgumentMetadata<'interactionCreate'>
   ): Promise<void> {
     const [interaction] = metadata.eventArgs;
