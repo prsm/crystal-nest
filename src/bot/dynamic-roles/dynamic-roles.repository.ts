@@ -9,7 +9,10 @@ import { UpdateDynamicRoleDto } from './dto/update-dynamic-role.dto';
 export class DynamicRolesRepository {
   private readonly logger: Logger;
 
-  constructor(private readonly configService: ConfigService, private readonly prisma: PrismaService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly prisma: PrismaService
+  ) {
     this.logger = new Logger(DynamicRolesRepository.name);
   }
 
