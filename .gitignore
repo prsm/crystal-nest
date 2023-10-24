@@ -42,3 +42,5 @@ documentation
 documentation/*
 .yarn
 /.nova
+
+.yarnrc
