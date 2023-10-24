@@ -13,7 +13,10 @@ export class GuildService {
   private static dynamicRolesCategoryId: string;
   private static retiredDynamicRolesCategoryId: string;
 
-  constructor(private readonly client: Client, private readonly configService: ConfigService) {
+  constructor(
+    private readonly client: Client,
+    private readonly configService: ConfigService
+  ) {
     GuildService.guildId = this.configService.getOrThrow<string>('discord.guildId');
     GuildService.archiveCategoryId = this.configService.getOrThrow<string>('discord.archiveCategoryId');
     GuildService.eventCategoryId = this.configService.getOrThrow<string>('discord.eventCategoryId');
