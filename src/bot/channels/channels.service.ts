@@ -160,7 +160,7 @@ export class ChannelsService extends GuildService {
         type: ChannelType.GuildVoice,
         parent: this.getVoiceCategoryId(),
         position: index,
-        topic: `dynamically created voice channel number ${index + 1}`,
+        // topic: `dynamically created voice channel number ${index + 1}`,
         bitrate: await this.getMaxBitrate()
       });
 
