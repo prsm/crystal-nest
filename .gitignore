@@ -44,3 +44,4 @@ documentation/*
 /.nova
 
 .yarnrc
+.env.prod
