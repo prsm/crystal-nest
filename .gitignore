@@ -42,3 +42,4 @@ documentation
 documentation/*
 .yarn
 /.nova
+.env.prod
