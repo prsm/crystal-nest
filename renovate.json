@@ -10,7 +10,7 @@
   "dependencyDashboardAutoclose": true,
   "dependencyDashboardLabels": ["dashboard", "wontfix"],
   "docker": {
-    "versioning": "docker"
+    "versioning": "node"
   },
   "nvm": {
     "fileMatch": ["(^|/)\\.nvmrc$"],
