@@ -1,7 +1,7 @@
 ARG APP_ENV=development
 
 # ----- BASE ------
-FROM node:20 as stage-base
+FROM node:21 as stage-base
 
 RUN apt-get update
 RUN apt-get install -y procps && rm -rf /var/lib/apt/lists/*
