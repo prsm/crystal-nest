@@ -2002,9 +2002,9 @@ ci-info@^3.2.0:
   integrity sha512-NIxF55hv4nSqQswkAeiOi1r83xy8JldOFDTWiug55KBu9Jnblncd2U6ViHmYgHf01TPZS77NJBhBMKdWj9HQMQ==
 
 cjs-module-lexer@^1.0.0:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/cjs-module-lexer/-/cjs-module-lexer-1.2.3.tgz#6c370ab19f8a3394e318fe682686ec0ac684d107"
-  integrity sha512-0TNiGstbQmCFwt4akjjBg5pLRTSyj/PkWQ1ZoO2zntmg9yLqSRxwEa4iCfQLGjqhiqBfOJa7W/E8wfGrTDmlZQ==
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/cjs-module-lexer/-/cjs-module-lexer-1.3.0.tgz#73de79dec6585a39fb72a4905851423b3f4f420b"
+  integrity sha512-bVFe+IGccK6kz2sM7Er2CoAcllmIVZFeauiyy/0r7UpBMAFTXD3yduZ7w1+MowSb0htol+zTArLTuzjoMZa14w==
 
 class-transformer@0.5.1:
   version "0.5.1"
@@ -2505,9 +2505,9 @@ es-errors@^1.3.0:
   integrity sha512-Zf5H2Kxt2xjTvbJvP2ZWLEICxA6j+hAmMzIlypy4xcBg1vKVnx89Wy0GbS+kf5cwCVFFzdCFh2XSCFNULS6csw==
 
 es-module-lexer@^1.2.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/es-module-lexer/-/es-module-lexer-1.5.1.tgz#1eb222f1b7ca8c09261f61566f496a6d2c9ee368"
-  integrity sha512-VUT3hi9kX2jEAhDYkGJ1+MUizc3bdT7lWR8rB03ODn5x+w9t0/Aq7MfHCl/e5uu9YcKzYqVuTH1K4f5vP6kN0w==
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/es-module-lexer/-/es-module-lexer-1.5.2.tgz#00b423304f2500ac59359cc9b6844951f372d497"
+  integrity sha512-l60ETUTmLqbVbVHv1J4/qj+M8nq7AwMzEcg3kmJDt9dCNrTk+yHcYFf/Kw75pMDwd9mPcIGCG5LcS20SxYRzFA==
 
 escalade@^3.1.1:
   version "3.1.2"
