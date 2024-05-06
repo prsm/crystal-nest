@@ -4027,9 +4027,9 @@ levn@^0.4.1:
     type-check "~0.4.0"
 
 libphonenumber-js@^1.10.53, libphonenumber-js@^1.9.43:
-  version "1.10.62"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.62.tgz#21bce1bb869514fa3c749de1f1caf121c4c63232"
-  integrity sha512-zbLf2yhgrs+TN4rHT7ral38WQEXjS4TWKp8QD3P5fJmHh3lCtTiPyr8XDPGaA7T41HDz2qxR7x3uwr+aNbShJQ==
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.11.0.tgz#2149144ca0ab1398f9cce156807ec1f33a0d0f9d"
+  integrity sha512-8gX0ZAdOvJxN4UudGdsOkoCU5DGVrOptye7uQpjR01iys3wfB9RWdkZg/M4hGp63tKe94TR7ntDlacg50+zjxA==
 
 lilconfig@3.0.0:
   version "3.0.0"
