@@ -15,8 +15,8 @@
     "url": "https://github.com/prsm/crystal-nest/issues"
   },
   "engines": {
-    "node": ">=20.0.0 <21.0.0",
-    "yarn": "^1.22.19"
+    "node": ">=22.0.0 <23.0.0",
+    "pnpm": "^9.12.1"
   },
   "repository": {
     "type": "git",
@@ -35,7 +35,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "doc:generate": "npx compodoc -p tsconfig.json -n 'go! Fleet // Versions Microservice'",
-    "doc:serve": "yarn doc:generate && npx compodoc -s",
+    "doc:serve": "pnpm doc:generate && npx compodoc -s",
     "prepare": "husky install",
     "release": "release-it"
   },
@@ -85,8 +85,8 @@
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
-      "yarn format",
-      "yarn lint"
+      "pnpm format",
+      "pnpm lint"
     ]
   },
   "jest": {
