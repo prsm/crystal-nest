@@ -26,7 +26,7 @@
     "automerge": true,
     "branchTopic": "lock-file-maintenance",
     "commitMessageAction": "Lock file maintenance",
-    "schedule": ["after 10pm and before 5:00am every day"],
+    "schedule": ["after 10pm and before 5:00am every month"],
     "prBodyDefinitions": {
       "Change": "All locks refreshed"
     }
