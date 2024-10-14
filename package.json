@@ -36,7 +36,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "doc:generate": "npx compodoc -p tsconfig.json -n 'go! Fleet // Versions Microservice'",
     "doc:serve": "pnpm doc:generate && npx compodoc -s",
-    "prepare": "husky install",
+    "prepare": "husky",
     "release": "release-it"
   },
   "dependencies": {
