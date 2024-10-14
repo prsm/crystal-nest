@@ -17,7 +17,6 @@ COPY . .
 # ----- BUILD ------
 FROM stage-development AS stage-build
 RUN yarn install
-RUN yarn prisma:generate
 RUN yarn build
 
 # ----- PRODUCTION ------
@@ -26,13 +25,9 @@ FROM stage-base AS stage-production
 COPY --from=stage-build /usr/src/app/dist ./dist
 COPY --from=stage-build /usr/src/app/yarn.lock ./yarn.lock
 
-RUN npm install --location=global prisma@5.4.2
-
 COPY package.json ./
-COPY prisma ./prisma/
 
 RUN yarn install --production
-RUN prisma generate
 
 # ----- MAIN ------
 FROM stage-${APP_ENV}
