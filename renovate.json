@@ -62,10 +62,6 @@
       "labels": ["framework"]
     },
     {
-      "matchPackagePatterns": ["prisma"],
-      "labels": ["orm"]
-    },
-    {
       "matchPackagePatterns": ["discord"],
       "labels": ["discord"]
     },
