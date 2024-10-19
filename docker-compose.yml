@@ -35,7 +35,7 @@ services:
   bot-database:
     container_name: bot-database
     restart: unless-stopped
-    image: postgres:16
+    image: postgres:17
     env_file:
       - ./.env
     ports:
