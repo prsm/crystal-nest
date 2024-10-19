@@ -65,7 +65,6 @@ A Nest rewrite of crystal, the SOS Discord bot.
 
 - [NestJS](https://nestjs.com/)
 - [discord-nestjs](https://github.com/fjodor-rybakov/discord-nestjs)
-- [Prisma](https://www.prisma.io/)
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
 

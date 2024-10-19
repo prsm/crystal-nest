@@ -4,12 +4,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ActivityType, GatewayIntentBits } from 'discord.js';
 import { BotModule } from './bot/bot.module';
 import configuration from './config/configuration';
-import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ load: [configuration], isGlobal: true, envFilePath: ['.env.local', '.env'] }),
-    PrismaModule,
     DiscordModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
