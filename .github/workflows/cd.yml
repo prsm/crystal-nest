@@ -3,12 +3,9 @@ name: cd
 on:
   push:
     branches:
-      - '**'
+      - 'develop'
     tags:
       - '*.*.*'
-  pull_request:
-    branches:
-      - 'main'
 
 jobs:
   build:
