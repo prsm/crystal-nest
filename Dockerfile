@@ -1,5 +1,5 @@
 # ----- BASE ------
-FROM node:22 AS base
+FROM node:23 AS base
 
 RUN apt-get update
 RUN apt-get install -y procps && rm -rf /var/lib/apt/lists/*
@@ -22,7 +22,7 @@ RUN rm -rf node_modules
 RUN pnpm install --frozen-lockfile --production --ignore-scripts
 
 # ----- PRODUCTION ------
-FROM node:22-slim AS production
+FROM node:23-slim AS production
 
 COPY --from=preproduction /usr/src/app/dist ./dist
 COPY --from=preproduction /usr/src/app/node_modules ./node_modules
