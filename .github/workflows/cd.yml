@@ -1,8 +1,6 @@
 name: cd
 
 on:
-  schedule:
-    - cron: '0 10 * * *'
   push:
     branches:
       - '**'
@@ -54,5 +52,4 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          target: stage-production
-          build-args: APP_ENV=production
+          target: production
