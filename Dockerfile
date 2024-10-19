@@ -1,34 +1,31 @@
-ARG APP_ENV=development
-
 # ----- BASE ------
-FROM node:22 as stage-base
+FROM node:22 AS base
 
 RUN apt-get update
 RUN apt-get install -y procps && rm -rf /var/lib/apt/lists/*
-
-ENV NODE_ENV=${APP_ENV}
+RUN npm install -g pnpm
 
 WORKDIR /usr/src/app
 
 # ----- DEVELOPMENT ------
-FROM stage-base AS stage-development
+FROM base AS development
 COPY . .
 
 # ----- BUILD ------
-FROM stage-development AS stage-build
-RUN yarn install
-RUN yarn build
+FROM development AS build
+RUN pnpm install --frozen-lockfile
+RUN pnpm build
+
+# ------PREPRODUCTION
+FROM build AS preproduction
+RUN rm -rf node_modules
+RUN pnpm install --frozen-lockfile --production --ignore-scripts
 
 # ----- PRODUCTION ------
-FROM stage-base AS stage-production
+FROM node:22-slim AS production
 
-COPY --from=stage-build /usr/src/app/dist ./dist
-COPY --from=stage-build /usr/src/app/yarn.lock ./yarn.lock
-
-COPY package.json ./
-
-RUN yarn install --production
+COPY --from=preproduction /usr/src/app/dist ./dist
+COPY --from=preproduction /usr/src/app/node_modules ./node_modules
 
 # ----- MAIN ------
-FROM stage-${APP_ENV}
-CMD ["yarn", "start:migrate:prod"]
+CMD ["node", "dist/main"]
