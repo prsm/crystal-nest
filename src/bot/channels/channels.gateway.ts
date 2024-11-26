@@ -17,7 +17,7 @@ export class ChannelsGateway {
       await this.channelsService.initVoiceChannels();
       this.logger.log(`Successfully initialized dynamic voice channels`);
     } catch (error) {
-      this.logger.log(`Failed to initialize dynamic voice channels`);
+      this.logger.error(`Failed to initialize dynamic voice channels:`, error);
     }
   }
 
@@ -27,6 +27,7 @@ export class ChannelsGateway {
       await this.channelsService.handleOnVoiceStateUpdate(oldState, newState);
       this.logger.log(`Successfully handled voice state update`);
     } catch (error) {
+      console.log('🚀 ~ ChannelsGateway ~ onVoiceStateUpdate ~ error:', error);
       this.logger.log(`Failed to handle voice state update`);
     }
   }

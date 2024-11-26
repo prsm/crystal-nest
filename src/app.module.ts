@@ -20,7 +20,7 @@ import configuration from './config/configuration';
             status: 'online',
             activities: [
               {
-                name: 'Pac-Man',
+                name: 'CS2 on de_cache',
                 type: ActivityType.Playing
               }
             ]
