@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@discord-nestjs/common':
-        specifier: 4.0.8
-        version: 4.0.8(@discord-nestjs/core@4.3.1(@nestjs/common@10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.5)(discord.js@14.16.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/common@10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.5)(discord.js@14.16.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(reflect-metadata@0.2.2)(rxjs@7.8.1)
+        specifier: 5.2.12
+        version: 5.2.12(@discord-nestjs/core@4.3.1(@nestjs/common@10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.5)(discord.js@14.16.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/common@10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.5)(discord.js@14.16.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@discord-nestjs/core':
         specifier: 4.3.1
         version: 4.3.1(@nestjs/common@10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.5)(discord.js@14.16.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -344,14 +344,14 @@ packages:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
 
-  '@discord-nestjs/common@4.0.8':
-    resolution: {integrity: sha512-O9mxUPbaXB4HYB6N+tgZhfSq0MTjHoOajhdPCtoCvJFfmtW03enLMvN3fhNYAtgavP/nYvMUvy+IvATqwPfXkg==}
+  '@discord-nestjs/common@5.2.12':
+    resolution: {integrity: sha512-uzSGLk18TdfNPDLDRZfqLcwA2xlvZzFXYWbfPWpePn2VzsRZChHb1KNbOHxwCfid3Olvbq9GdeLmk7j6+3gpsg==}
     peerDependencies:
       '@discord-nestjs/core': '*'
-      '@nestjs/common': 8.* || 9.*
-      '@nestjs/core': 8.* || 9.*
+      '@nestjs/common': 9.* || 10.*
+      '@nestjs/core': 9.* || 10.*
       discord.js: 14.*
-      reflect-metadata: ^0.1.13
+      reflect-metadata: ^0.1.12 || ^0.2.0
       rxjs: ^7.*
 
   '@discord-nestjs/core@4.3.1':
@@ -581,13 +581,13 @@ packages:
       '@nestjs/websockets':
         optional: true
 
-  '@nestjs/mapped-types@1.2.0':
-    resolution: {integrity: sha512-NTFwPZkQWsArQH8QSyFWGZvJ08gR+R4TofglqZoihn/vU+ktHEJjMqsIsADwb7XD97DhiD+TVv5ac+jG33BHrg==}
+  '@nestjs/mapped-types@2.0.5':
+    resolution: {integrity: sha512-bSJv4pd6EY99NX9CjBIyn4TVDoSit82DUZlL4I3bqNfy5Gt+gXTa86i3I/i0iIV9P4hntcGM5GyO+FhZAhxtyg==}
     peerDependencies:
-      '@nestjs/common': ^7.0.8 || ^8.0.0 || ^9.0.0
-      class-transformer: ^0.2.0 || ^0.3.0 || ^0.4.0 || ^0.5.0
-      class-validator: ^0.11.1 || ^0.12.0 || ^0.13.0
-      reflect-metadata: ^0.1.12
+      '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
+      class-transformer: ^0.4.0 || ^0.5.0
+      class-validator: ^0.13.0 || ^0.14.0
+      reflect-metadata: ^0.1.12 || ^0.2.0
     peerDependenciesMeta:
       class-transformer:
         optional: true
@@ -1161,9 +1161,6 @@ packages:
 
   class-transformer@0.5.1:
     resolution: {integrity: sha512-SQa1Ws6hUbfC98vKGxZH3KFY0Y1lm5Zm0SY8XX9zbK7FJCyVEac3ATW0RIpwzW+oOfmHE5PMPufDG9hCfoEOMw==}
-
-  class-validator@0.13.2:
-    resolution: {integrity: sha512-yBUcQy07FPlGzUjoLuUfIOXzgynnQPPruyK1Ge2B74k9ROwnle1E+NxLWnUv5OLU8hA/qL5leAE9XnXq3byaBw==}
 
   class-validator@0.14.1:
     resolution: {integrity: sha512-2VEG9JICxIqTpoK1eMzZqaV+u/EiwEJkMGzTrZf6sU/fwsnOITVgYJ8yojSy6CaXtO9V0Cc6ZQZ8h8m4UBuLwQ==}
@@ -3610,14 +3607,14 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  '@discord-nestjs/common@4.0.8(@discord-nestjs/core@4.3.1(@nestjs/common@10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.5)(discord.js@14.16.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/common@10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.5)(discord.js@14.16.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(reflect-metadata@0.2.2)(rxjs@7.8.1)':
+  '@discord-nestjs/common@5.2.12(@discord-nestjs/core@4.3.1(@nestjs/common@10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.5)(discord.js@14.16.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/common@10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.5)(discord.js@14.16.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(reflect-metadata@0.2.2)(rxjs@7.8.1)':
     dependencies:
       '@discord-nestjs/core': 4.3.1(@nestjs/common@10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.5)(discord.js@14.16.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/common': 10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 10.4.5(@nestjs/common@10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.5)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@nestjs/mapped-types': 1.2.0(@nestjs/common@10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(class-transformer@0.5.1)(class-validator@0.13.2)(reflect-metadata@0.2.2)
+      '@nestjs/mapped-types': 2.0.5(@nestjs/common@10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)
       class-transformer: 0.5.1
-      class-validator: 0.13.2
+      class-validator: 0.14.1
       discord.js: 14.16.3(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       reflect-metadata: 0.2.2
       rxjs: 7.8.1
@@ -3988,13 +3985,13 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@nestjs/mapped-types@1.2.0(@nestjs/common@10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(class-transformer@0.5.1)(class-validator@0.13.2)(reflect-metadata@0.2.2)':
+  '@nestjs/mapped-types@2.0.5(@nestjs/common@10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)':
     dependencies:
       '@nestjs/common': 10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       reflect-metadata: 0.2.2
     optionalDependencies:
       class-transformer: 0.5.1
-      class-validator: 0.13.2
+      class-validator: 0.14.1
 
   '@nestjs/platform-express@10.4.5(@nestjs/common@10.4.5(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.5)':
     dependencies:
@@ -4696,11 +4693,6 @@ snapshots:
   cjs-module-lexer@1.4.1: {}
 
   class-transformer@0.5.1: {}
-
-  class-validator@0.13.2:
-    dependencies:
-      libphonenumber-js: 1.11.12
-      validator: 13.12.0
 
   class-validator@0.14.1:
     dependencies:
