@@ -78,7 +78,9 @@ export class ChannelsService extends GuildService {
   private async getCategoryChannels(): Promise<VoiceChannel[]> {
     const guild = await this.getGuild();
     const allChannels = Array.from(guild.channels.cache.values());
-    return allChannels.filter(channel => channel.parentId === this.getVoiceCategoryId()) as VoiceChannel[];
+    return allChannels.filter(
+      channel => channel.parentId === this.getVoiceCategoryId() && channel.type === ChannelType.GuildVoice
+    ) as VoiceChannel[];
   }
 
   private async getMaxBitrate(): Promise<number> {
@@ -160,7 +162,7 @@ export class ChannelsService extends GuildService {
         type: ChannelType.GuildVoice,
         parent: this.getVoiceCategoryId(),
         position: index,
-        // topic: `dynamically created voice channel number ${index + 1}`,
+        // topic: `i love apples`,
         bitrate: await this.getMaxBitrate()
       });
 
@@ -178,8 +180,8 @@ export class ChannelsService extends GuildService {
   private async updateChannel(channel: VoiceBasedChannel, index: number): Promise<void> {
     try {
       const updatedChannel = await channel.edit({
-        name: `voice ${index + 1}`,
-        topic: `dynamically created voice channel number ${index + 1}`
+        name: `voice ${index + 1}`
+        // topic: `i love apples`
       });
 
       this.logger.log(`Renamed channel ${channel.name} to ${updatedChannel.name}`);
@@ -195,13 +197,26 @@ export class ChannelsService extends GuildService {
 
   private async deleteChannel(channel: VoiceBasedChannel): Promise<void> {
     try {
-      await channel.delete();
+      const botMember = channel.guild.members.me;
 
+      if (!botMember.permissions.has('ManageChannels')) {
+        this.logger.error('Bot lacks ManageChannels permission at server level');
+        return;
+      }
+
+      if (!channel.permissionsFor(botMember).has('ManageChannels')) {
+        this.logger.error(`Bot lacks ManageChannels permission for channel ${channel.name}`);
+        return;
+      }
+
+      await channel.delete();
       this.logger.log(`Deleted channel ${channel.name}`);
     } catch (e) {
       const error = e as DiscordAPIError;
       if (error.code === 10003) {
         this.logger.log('Channel not found');
+      } else if (error.code === 50013) {
+        this.logger.error(`Missing permissions to delete channel ${channel.name}`);
       } else {
         throw error;
       }

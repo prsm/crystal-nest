@@ -31,7 +31,8 @@ export class LockChannelCommand implements DiscordTransformedCommand<LockChannel
       await interaction.reply(await this.channelsService.handleLockChannel(voice, lockChannelDto));
       this.logger.log(`Lock command executed successfully`);
     } catch (error) {
-      this.logger.log(`Failed to execute lock command`);
+      const e = error as Error;
+      this.logger.error(`Failed to execute lock command: ${e.message}`);
     }
   }
 }

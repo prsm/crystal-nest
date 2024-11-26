@@ -16,8 +16,9 @@ export class EventsGateway {
     try {
       await this.eventsService.handleOnCreate(event);
       this.logger.log(`Event ${event.name} created successfully`);
-    } catch (error) {
-      this.logger.log(`Failed to create event ${event.name}`);
+    } catch (e) {
+      const error = e as Error;
+      this.logger.error(`Failed to create event ${event.name}: ${error.message}`);
     }
   }
 
@@ -26,8 +27,9 @@ export class EventsGateway {
     try {
       await this.eventsService.handleOnUpdate(oldEvent, newEvent);
       this.logger.log(`Event ${newEvent.name} updated successfully`);
-    } catch (error) {
-      this.logger.log(`Failed to update event ${oldEvent.name}`);
+    } catch (e) {
+      const error = e as Error;
+      this.logger.error(`Failed to update event ${oldEvent.name}: ${error.message}`);
     }
   }
 
@@ -36,8 +38,9 @@ export class EventsGateway {
     try {
       await this.eventsService.handleOnDelete(event);
       this.logger.log(`Event ${event.name} deleted successfully`);
-    } catch (error) {
-      this.logger.log(`Failed to delete event ${event.name}`);
+    } catch (e) {
+      const error = e as Error;
+      this.logger.error(`Failed to delete event ${event.name}: ${error.message}`);
     }
   }
 
@@ -45,9 +48,10 @@ export class EventsGateway {
   async onUserAdd(event: GuildScheduledEvent, user: User): Promise<void> {
     try {
       await this.eventsService.handleOnUserAdd(event, user);
-      this.logger.log(`${user.username} was added to Event ${event.name} successfully`);
-    } catch (error) {
-      this.logger.log(`Failed to add ${user.username} to Event ${event.name}`);
+      this.logger.log(`User ${user.username} was added to event ${event.name} successfully`);
+    } catch (e) {
+      const error = e as Error;
+      this.logger.error(`Failed to add user ${user.username} to event ${event.name}: ${error.message}`);
     }
   }
 
@@ -55,9 +59,10 @@ export class EventsGateway {
   async onUserRemove(event: GuildScheduledEvent, user: User): Promise<void> {
     try {
       await this.eventsService.handleOnUserRemove(event, user);
-      this.logger.log(`${user.username} was removed to Event ${event.name} successfully`);
-    } catch (error) {
-      this.logger.log(`Failed to remove ${user.username} to Event ${event.name}`);
+      this.logger.log(`User ${user.username} was removed from event ${event.name} successfully`);
+    } catch (e) {
+      const error = e as Error;
+      this.logger.error(`Failed to remove user ${user.username} from event ${event.name}: ${error.message}`);
     }
   }
 }
