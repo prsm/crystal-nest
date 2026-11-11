@@ -2,7 +2,7 @@
   "license": "MIT",
   "name": "crystal-nest",
   "description": "A Nest rewrite of crystal, the SOS Discord bot",
-  "version": "0.5.1-192",
+  "version": "0.5.1-193",
   "author": "Jonas Schultheiss <jonas.schultheiss@sos-esports.com> (https://jonasschultheiss.dev)",
   "keywords": [
     "discord",
@@ -62,7 +62,7 @@
     "@nestjs/cli": "10.4.5",
     "@nestjs/schematics": "10.2.2",
     "@nestjs/testing": "10.4.5",
-    "@types/express": "5.0.0",
+    "@types/express": "5.0.6",
     "@types/jest": "29.5.13",
     "@types/node": "22.7.6",
     "@types/supertest": "6.0.2",
